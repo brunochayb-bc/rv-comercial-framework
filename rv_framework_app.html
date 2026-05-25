@@ -748,22 +748,47 @@
   </div>
 
   <div class="card" style="margin-top:0">
-    <div class="card-title">Salário médio por papel</div>
-    <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);background:var(--teal-lt);display:inline-block;padding:3px 9px;border-radius:4px;margin-bottom:12px">Salário fixo mensal (R$)</div>
-    <div class="form-row">
-      <label>Salário médio EV (R$)</label>
-      <input type="range" min="3000" max="30000" step="500" id="sim-sal-ev" value="10000" oninput="calcSim()">
-      <span class="val" id="sim-sal-ev-disp">R$ 10.000</span>
-    </div>
-    <div class="form-row">
-      <label>Salário médio GC (R$)</label>
-      <input type="range" min="3000" max="30000" step="500" id="sim-sal-gc" value="8000" oninput="calcSim()">
-      <span class="val" id="sim-sal-gc-disp">R$ 8.000</span>
-    </div>
-    <div class="form-row">
-      <label>Salário médio CS (R$)</label>
-      <input type="range" min="3000" max="30000" step="500" id="sim-sal-cs" value="8000" oninput="calcSim()">
-      <span class="val" id="sim-sal-cs-disp">R$ 8.000</span>
+    <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+      <div style="flex:1;min-width:280px">
+        <div class="card-title">Salário médio por papel</div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);background:var(--teal-lt);display:inline-block;padding:3px 9px;border-radius:4px;margin-bottom:12px">Salário fixo mensal (R$)</div>
+        <div class="form-row">
+          <label>Salário médio EV (R$)</label>
+          <input type="range" min="3000" max="30000" step="500" id="sim-sal-ev" value="10000" oninput="calcSim()">
+          <span class="val" id="sim-sal-ev-disp">R$ 10.000</span>
+        </div>
+        <div class="form-row">
+          <label>Salário médio GC (R$)</label>
+          <input type="range" min="3000" max="30000" step="500" id="sim-sal-gc" value="8000" oninput="calcSim()">
+          <span class="val" id="sim-sal-gc-disp">R$ 8.000</span>
+        </div>
+        <div class="form-row">
+          <label>Salário médio CS (R$)</label>
+          <input type="range" min="3000" max="30000" step="500" id="sim-sal-cs" value="8000" oninput="calcSim()">
+          <span class="val" id="sim-sal-cs-disp">R$ 8.000</span>
+        </div>
+      </div>
+
+      <!-- Box referência de mercado -->
+      <div style="min-width:180px;background:var(--amber-lt);border:1px solid #FDE68A;border-radius:var(--radius);padding:14px 16px;align-self:center">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--amber);margin-bottom:10px">📊 Indicativo de mercado</div>
+        <div style="font-size:11px;color:var(--text-2);margin-bottom:2px">Referência SaaS Brasil</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+            <span style="font-size:12px;font-weight:600;color:var(--text)">EV</span>
+            <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px">R$ 15.000</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+            <span style="font-size:12px;font-weight:600;color:var(--text)">GC</span>
+            <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px">R$ 12.000</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+            <span style="font-size:12px;font-weight:600;color:var(--text)">CS</span>
+            <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px">R$ 9.000</span>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--text-3);margin-top:10px;line-height:1.5">Salário médio de referência - mercado SaaS B2B, 2025</div>
+      </div>
     </div>
   </div>
 
