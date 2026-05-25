@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Framework de RV Comercial</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --navy: #0D1B3E;
+    --blue: #1A56DB;
+    --blue-lt: #E6F1FB;
+    --teal: #0E9F6E;
+    --teal-lt: #E3FAF3;
+    --amber: #D97706;
+    --amber-lt: #FEF3C7;
+    --red: #DC2626;
+    --red-lt: #FEE2E2;
+    --purple: #7C3AED;
+    --purple-lt: #EDE9FE;
+    --gray: #6B7280;
+    --gray-lt: #F3F4F6;
+    --white: #FFFFFF;
+    --bg: #F8F9FB;
+    --border: #E5E7EB;
+    --text: #111827;
+    --text-2: #6B7280;
+    --text-3: #9CA3AF;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .layout { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 220px;
+    min-height: 100vh;
+    background: var(--navy);
+    padding: 24px 0;
+    position: fixed;
+    top: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 0 20px 24px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .sidebar-logo .logo-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: .02em;
+  }
+  .sidebar-logo .logo-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,.4);
+    margin-top: 2px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+
+  .sidebar-nav { padding: 16px 0; flex: 1; }
+
+  .nav-section-label {
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+    padding: 0 20px;
+    margin: 16px 0 6px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: rgba(255,255,255,.55);
+    cursor: pointer;
+    transition: all .15s;
+    border-left: 2px solid transparent;
+  }
+  .nav-item:hover { color: rgba(255,255,255,.85); background: rgba(255,255,255,.04); }
+  .nav-item.active {
+    color: #fff;
+    background: rgba(26,86,219,.25);
+    border-left-color: var(--blue);
+  }
+  .nav-item .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: .6;
+    flex-shrink: 0;
+  }
+  .nav-item.active .nav-dot { opacity: 1; }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: 220px;
+    flex: 1;
+    padding: 32px 36px;
+    max-width: 1100px;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .page-header { margin-bottom: 28px; }
+  .page-title { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .page-sub { font-size: 13.5px; color: var(--text-2); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 14px;
+  }
+
+  .metric-grid { display: grid; gap: 12px; margin-bottom: 16px; }
+  .metric-grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .metric-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .metric-grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+  .metric {
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+  }
+  .metric-label { font-size: 11px; color: var(--text-2); margin-bottom: 4px; }
+  .metric-val { font-size: 20px; font-weight: 600; color: var(--text); }
+  .metric-sub { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+
+  /* ── FORM ROWS ── */
+  .form-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .form-row label {
+    font-size: 12.5px;
+    color: var(--text-2);
+    min-width: 230px;
+  }
+  .form-row input[type=range] {
+    flex: 1;
+    accent-color: var(--blue);
+  }
+  .form-row .val {
+    font-size: 12.5px;
+    font-weight: 500;
+    min-width: 100px;
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+  }
+
+  /* ── TABLE ── */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .tbl th {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    padding: 0 10px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .tbl td {
+    padding: 10px;
+    border-bottom: 1px solid var(--gray-lt);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl tr:hover td { background: var(--bg); }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 99px;
+  }
+  .badge-blue  { background: var(--blue-lt);   color: #0C447C; }
+  .badge-teal  { background: var(--teal-lt);   color: #085041; }
+  .badge-amber { background: var(--amber-lt);  color: #633806; }
+  .badge-red   { background: var(--red-lt);    color: #7F1D1D; }
+  .badge-purple{ background: var(--purple-lt); color: #4C1D95; }
+  .badge-gray  { background: var(--gray-lt);   color: #4B5563; }
+
+  /* ── PILL TABS ── */
+  .pill-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pill-tab {
+    padding: 6px 14px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-2);
+    cursor: pointer;
+    background: var(--white);
+    transition: all .15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .pill-tab:hover { border-color: var(--blue); color: var(--blue); }
+  .pill-tab.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+  /* ── ACCENT BOX ── */
+  .accent-box {
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 12px;
+    line-height: 1.65;
+    margin-top: 12px;
+  }
+  .accent-box.info    { background: var(--blue-lt);   color: #0C447C; }
+  .accent-box.success { background: var(--teal-lt);   color: #085041; }
+  .accent-box.warn    { background: var(--amber-lt);  color: #633806; }
+  .accent-box.danger  { background: var(--red-lt);    color: #7F1D1D; }
+  .accent-box.purple  { background: var(--purple-lt); color: #4C1D95; }
+
+  /* ── STACKED BAR ── */
+  .stack-bar {
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 22px;
+    margin: 8px 0;
+  }
+  .stack-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+    transition: flex .3s;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 4px;
+  }
+
+  /* ── CURVE CHART ── */
+  .chart-wrap { position: relative; width: 100%; }
+
+  /* ── PAPEL CARDS ── */
+  .papel-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 16px; }
+  .papel-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    background: var(--white);
+  }
+  .papel-card-hdr {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .papel-card-sub { font-size: 11px; color: var(--text-2); margin-bottom: 12px; }
+  .papel-card-val { font-size: 22px; font-weight: 600; margin-bottom: 2px; }
+  .papel-card-note { font-size: 10.5px; color: var(--text-3); }
+  .bar-mini { height: 5px; border-radius: 3px; margin-top: 10px; }
+
+  /* ── FORMULA ── */
+  .formula {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+  }
+  .formula-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    font-size: 12.5px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .01em;
+    color: var(--text);
+  }
+  .formula-op { font-size: 16px; color: var(--text-3); font-weight: 300; }
+
+  /* ── ATTR TABLE ── */
+  .attr-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 99px;
+    min-width: 48px;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .01em;
+  }
+
+  /* ── SCENARIO ROWS ── */
+  .sc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-lt);
+    font-size: 12.5px;
+  }
+  .sc-row:last-child { border-bottom: none; }
+
+  /* ── VERIFY ROW ── */
+  .verify-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-lt);
+    font-size: 12.5px;
+  }
+  .verify-row:last-child { border-bottom: none; }
+
+  /* ── PRINCIPLE ROWS ── */
+  .principle-row {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-lt);
+    align-items: flex-start;
+  }
+  .principle-row:last-child { border-bottom: none; }
+  .principle-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .principle-title { font-size: 12.5px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .principle-body  { font-size: 11.5px; color: var(--text-2); line-height: 1.6; }
+
+  /* ── SUMMARY STAT ── */
+  .summary-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px; }
+  .summary-card {
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    border: 1px solid transparent;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-title">RV Comercial</div>
+    <div class="logo-sub">Framework completo</div>
+    <div id="fb-status" style="margin-top:8px;font-size:10px;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:5px">
+      <span style="width:6px;height:6px;border-radius:50%;background:#9CA3AF;display:inline-block" id="fb-dot"></span>
+      <span id="fb-status-text">Conectando...</span>
+    </div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-item active" onclick="goTo('home')" id="nav-home" style="margin-bottom:4px;font-size:13px;letter-spacing:.01em;color:rgba(255,255,255,.8);border-left:2px solid var(--blue)">
+      <span style="font-size:15px">⌂</span> Home
+    </div>
+    <div class="nav-section-label" style="margin-top:8px">Configuração</div>
+    <div class="nav-item" onclick="goTo('meta')"><span class="nav-dot"></span>Meta e headcount</div>
+    <div class="nav-item" onclick="goTo('papeis')"><span class="nav-dot"></span>Os três papéis</div>
+
+    <div class="nav-section-label">Modelo de RV</div>
+    <div class="nav-item" onclick="goTo('ote')"><span class="nav-dot"></span>OTE e múltiplos</div>
+    <div class="nav-item" onclick="goTo('degraus')"><span class="nav-dot"></span>Degraus progressivos</div>
+    <div class="nav-item" onclick="goTo('aceleradores')"><span class="nav-dot"></span>Aceleradores e cap</div>
+
+    <div class="nav-section-label">Distribuição</div>
+    <div class="nav-item" onclick="goTo('rateio')"><span class="nav-dot"></span>Rateio de metas</div>
+    <div class="nav-item" onclick="goTo('atribuicao')"><span class="nav-dot"></span>Atribuição de receita</div>
+
+    <div class="nav-section-label">Resultados</div>
+    <div class="nav-item" onclick="goTo('simulador')"><span class="nav-dot"></span>Simulador trimestral</div>
+    <div class="nav-item" onclick="goTo('validacao')"><span class="nav-dot"></span>Validação do modelo</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ══ PAGE: HOME ══════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div id="home-content"></div>
+</div>
+
+<!-- ══ PAGE: META ══════════════════════════════════════════════ -->
+<div id="page-meta" class="page">
+  <div class="page-header">
+    <div class="page-title">Meta global e headcount</div>
+    <div class="page-sub">Defina a meta financeira trimestral e o número de pessoas por papel.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Parâmetros globais</div>
+
+    <!-- Sub-seção: Meta financeira -->
+    <div style="margin-bottom:16px">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--blue);background:var(--blue-lt);display:inline-block;padding:3px 9px;border-radius:4px;margin-bottom:10px">Meta financeira</div>
+      <div class="form-row">
+        <label>Meta trimestral total (R$)</label>
+        <input type="range" min="100000" max="3000000" step="50000" id="g-meta" value="900000" oninput="updateAll()">
+        <span class="val" id="g-meta-disp">R$ 900.000</span>
+      </div>
+    </div>
+
+    <!-- Divisor -->
+    <div style="border-top:1px solid var(--border);margin-bottom:16px"></div>
+
+    <!-- Sub-seção: Equipe -->
+    <div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);background:var(--teal-lt);display:inline-block;padding:3px 9px;border-radius:4px;margin-bottom:10px">Equipe por papel</div>
+      <div class="form-row">
+        <label>Executivos de vendas (EV)</label>
+        <input type="range" min="1" max="15" step="1" id="g-hc-ev" value="8" oninput="updateAll()">
+        <span class="val" id="g-hc-ev-disp">8 pessoas</span>
+      </div>
+      <div class="form-row">
+        <label>Gerentes de contas (GC)</label>
+        <input type="range" min="1" max="15" step="1" id="g-hc-gc" value="6" oninput="updateAll()">
+        <span class="val" id="g-hc-gc-disp">6 pessoas</span>
+      </div>
+      <div class="form-row">
+        <label>Customer success (CS)</label>
+        <input type="range" min="1" max="15" step="1" id="g-hc-cs" value="8" oninput="updateAll()">
+        <span class="val" id="g-hc-cs-disp">8 pessoas</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="metric-grid metric-grid-4" id="meta-metrics"></div>
+
+  <div class="card">
+    <div class="card-title">Divisão ataque / defesa</div>
+    <div class="form-row">
+      <label>Peso ataque (novas receitas)</label>
+      <input type="range" min="50" max="80" step="5" id="g-ataque" value="70" oninput="updateAll()">
+      <span class="val" id="g-ataque-disp">70%</span>
+    </div>
+    <div id="ataque-bar" class="stack-bar"></div>
+    <div style="display:flex;gap:16px;font-size:11px;color:var(--text-2);margin-top:4px">
+      <span>🔴 Ataque — EV (novas receitas)</span>
+      <span>🟢 Defesa — GC + CS (retenção e saúde)</span>
+    </div>
+    <div class="accent-box info" style="margin-top:12px" id="ataque-insight"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: PAPÉIS ════════════════════════════════════════════ -->
+<div id="page-papeis" class="page">
+  <div class="page-header">
+    <div class="page-title">Os três papéis</div>
+    <div class="page-sub">EV com meta financeira (ataque) · GC e CS com meta de defesa · CS com indicadores de saúde.</div>
+  </div>
+  <div class="papel-grid" id="papel-cards-page"></div>
+  <div class="card" id="mix-justificativa-card">
+    <div class="card-title">Por que esse modelo por papel?</div>
+    <div id="mix-justificativa"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Como calcular o atingimento do CS</div>
+    <div class="accent-box purple" style="margin-bottom:14px">
+      O CS não tem cota financeira. O atingimento trimestral é calculado como média ponderada dos indicadores — esse número entra na curva de degraus exatamente como o atingimento financeiro do EV e do GA.
+    </div>
+    <table class="tbl">
+      <thead><tr><th>Indicador</th><th>Peso</th><th>Alvo do trimestre</th><th>Realizado</th><th>Atingimento</th><th>Contribuição</th></tr></thead>
+      <tbody id="cs-ind-table"></tbody>
+      <tfoot><tr style="background:var(--bg)">
+        <td colspan="4" style="padding:10px;font-weight:600">Atingimento ponderado total</td>
+        <td colspan="2" style="padding:10px"><strong id="cs-ating-total" style="font-size:16px;color:#7C3AED">—</strong></td>
+      </tr></tfoot>
+    </table>
+    <div id="cs-ind-note" class="accent-box info" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: OTE ═══════════════════════════════════════════════ -->
+<div id="page-ote" class="page">
+  <div class="page-header">
+    <div class="page-title">OTE e múltiplos salariais</div>
+    <div class="page-sub">EV e GC: atingimento financeiro entra direto na curva de degraus. CS: atingimento médio ponderado dos indicadores entra na curva.</div>
+  </div>
+
+  <div class="pill-tabs" id="ote-tabs">
+    <button class="pill-tab active" onclick="setOteRole('ev',this)">Executivo de vendas</button>
+    <button class="pill-tab" onclick="setOteRole('gc',this)">Gerente de contas (GC)</button>
+    <button class="pill-tab" onclick="setOteRole('cs',this)">Customer success</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Parâmetros do papel</div>
+    <div class="form-row">
+      <label>Salário fixo mensal (R$)</label>
+      <input type="range" min="5000" max="30000" step="500" id="ote-sal" value="10000" oninput="calcOte()">
+      <span class="val" id="ote-sal-disp">R$ 10.000</span>
+    </div>
+    <div class="form-row">
+      <label>Múltiplo RV trimestral</label>
+      <input type="range" min="0.5" max="5" step="0.1" id="ote-mult" value="3.0" oninput="calcOte()">
+      <span class="val" id="ote-mult-disp">3,0×</span>
+    </div>
+    <div class="form-row">
+      <label>Atingimento do trimestre (%)</label>
+      <input type="range" min="0" max="160" step="5" id="ote-ating" value="100" oninput="calcOte()">
+      <span class="val" id="ote-ating-disp">100%</span>
+    </div>
+  </div>
+
+  <div class="metric-grid metric-grid-4" id="ote-metrics"></div>
+
+  <div class="card">
+    <div class="card-title">Fórmula</div>
+    <div class="formula">
+      <div class="formula-block">Salário fixo mensal</div>
+      <div class="formula-op">×</div>
+      <div class="formula-block">múltiplo</div>
+      <div class="formula-op">=</div>
+      <div class="formula-block" id="formula-rv-alvo" style="color:var(--blue)">RV alvo/tri</div>
+    </div>
+    <div class="formula">
+      <div class="formula-block">RV alvo</div>
+      <div class="formula-op">×</div>
+      <div class="formula-block" id="formula-fator" style="color:var(--teal)">fator do degrau</div>
+      <div class="formula-op">=</div>
+      <div class="formula-block" id="formula-rv-paga" style="color:var(--teal)">RV paga</div>
+    </div>
+    <div class="accent-box success" id="ote-verify" style="margin-top:8px"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Cenários de ganho</div>
+    <div id="ote-cenarios"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Referência de mercado SaaS Brasil</div>
+    <div id="ote-referencia"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: DEGRAUS ═══════════════════════════════════════════ -->
+<div id="page-degraus" class="page">
+  <div class="page-header">
+    <div class="page-title">Degraus progressivos</div>
+    <div class="page-sub">Pontos âncora, metodologia de calibragem e princípios de validação.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Calibrar pontos âncora</div>
+    <div class="pill-tabs" id="degrau-meth-tabs">
+      <button class="pill-tab active" onclick="setDegrauMeth('equilibrado',this)">Equilibrado</button>
+      <button class="pill-tab" onclick="setDegrauMeth('custom',this)">Personalizado</button>
+    </div>
+    <div id="degrau-custom-controls" style="display:none">
+      <div class="form-row">
+        <label>Fator em 50% de atingimento</label>
+        <input type="range" min="5" max="55" step="5" id="anc-50" value="30" oninput="calcDegraus()">
+        <span class="val" id="anc-50-disp">30%</span>
+      </div>
+      <div class="form-row">
+        <label>Fator em 75% de atingimento</label>
+        <input type="range" min="30" max="85" step="5" id="anc-75" value="65" oninput="calcDegraus()">
+        <span class="val" id="anc-75-disp">65%</span>
+      </div>
+    </div>
+    <div id="degrau-pontos" style="margin-top:8px"></div>
+    <div class="chart-wrap" style="height:200px;margin-top:12px">
+      <canvas id="degrau-chart" role="img" aria-label="Curva de pagamento de RV por atingimento">Curva de pagamento por atingimento da meta.</canvas>
+    </div>
+    <div id="degrau-insight" class="accent-box info" style="margin-top:12px"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">5 princípios de validação</div>
+    <div id="principios-list"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: ACELERADORES ═════════════════════════════════════ -->
+<div id="page-aceleradores" class="page">
+  <div class="page-header">
+    <div class="page-title">Aceleradores e cap</div>
+    <div class="page-sub">Estrutura de recompensa acima de 100% de atingimento.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Parâmetros dos aceleradores</div>
+    <div class="form-row">
+      <label>Fator em 120% de atingimento</label>
+      <input type="range" min="110" max="150" step="5" id="acc-120" value="130" oninput="calcAcc()">
+      <span class="val" id="acc-120-disp">130%</span>
+    </div>
+    <div class="form-row">
+      <label>Incremento acima de 120% (% do RV alvo / pt %)</label>
+      <input type="range" min="0.5" max="3" step="0.5" id="acc-inc" value="1.5" oninput="calcAcc()">
+      <span class="val" id="acc-inc-disp">1,5%</span>
+    </div>
+    <div class="form-row">
+      <label>Cap máximo (% do RV alvo)</label>
+      <input type="range" min="150" max="300" step="25" id="acc-cap" value="200" oninput="calcAcc()">
+      <span class="val" id="acc-cap-disp">200%</span>
+    </div>
+  </div>
+
+  <div class="metric-grid metric-grid-3" id="acc-metrics"></div>
+
+  <div class="card">
+    <div class="card-title">Ganho como % do RV alvo trimestral</div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="acc-chart" role="img" aria-label="Ganho como porcentagem do RV alvo por nível de atingimento">Ganho por nível de atingimento.</canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:#DC2626;font-size:13px;letter-spacing:.04em">⚡ SPRINT BÔNUS (COMPLEMENTO OPCIONAL)</div>
+    <div class="form-row">
+      <label>Valor fixo por deal fechado (R$)</label>
+      <input type="range" min="200" max="3000" step="100" id="sprint-val" value="800" oninput="calcAcc()">
+      <span class="val" id="sprint-val-disp">R$ 800</span>
+    </div>
+    <div class="accent-box purple" id="sprint-insight"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: RATEIO ════════════════════════════════════════════ -->
+<div id="page-rateio" class="page">
+  <div class="page-header">
+    <div class="page-title">Rateio de metas por função</div>
+    <div class="page-sub">Distribua a meta global em cotas individuais por papel. CS não carrega cota financeira — participa via atribuição compartilhada.</div>
+  </div>
+
+  <div class="pill-tabs" id="rateio-tabs">
+    <button class="pill-tab active" onclick="setRateio('ataque_defesa',this)">Ataque / Defesa</button>
+    <button class="pill-tab" onclick="setRateio('produtividade',this)">Produtividade esperada</button>
+    <button class="pill-tab" onclick="setRateio('historico',this)">Histórico de contribuição</button>
+  </div>
+
+  <div class="card" id="rateio-desc-card"></div>
+
+  <div class="papel-grid" id="rateio-cotas"></div>
+
+  <div class="card">
+    <div class="card-title">Verificação — soma das cotas vs. meta global</div>
+    <div id="rateio-verificacao"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Salário base implícito por papel</div>
+    <div class="accent-box info">O salário implícito é o salário que faz a equação fechar: cota individual ÷ múltiplo RV. Se o salário real for muito diferente, reveja a cota ou o múltiplo.</div>
+    <div id="rateio-salario" style="margin-top:12px"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: ATRIBUIÇÃO ════════════════════════════════════════ -->
+<div id="page-atribuicao" class="page">
+  <div class="page-header">
+    <div class="page-title">Atribuição de receita compartilhada</div>
+    <div class="page-sub">Defina quanto vai para cada papel por tipo de venda. Registrado no CRM antes do trimestre.</div>
+  </div>
+  <div style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px">
+    <span style="font-size:16px;flex-shrink:0">⚠️</span>
+    <div style="font-size:12.5px;color:#78350F;line-height:1.6">
+      <strong>Regra de ouro:</strong> a tabela deve ser aprovada e registrada no CRM <strong>ANTES do início do trimestre</strong>.
+      Nenhuma atribuição é negociada caso a caso — isso protege o colaborador e a empresa igualmente.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Tabela de splits por cenário</div>
+    <table class="tbl" id="attr-table"></table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Personalizar splits</div>
+    <div id="attr-custom"></div>
+
+  </div>
+</div>
+
+<!-- ══ PAGE: SIMULADOR ════════════════════════════════════════ -->
+<div id="page-simulador" class="page">
+  <div class="page-header">
+    <div class="page-title">Simulador trimestral completo</div>
+    <div class="page-sub">Defina o atingimento de cada papel e veja o custo total de RV vs. receita reconhecida.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Atingimento por papel</div>
+    <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--blue);background:var(--blue-lt);display:inline-block;padding:3px 9px;border-radius:4px;margin-bottom:12px">% de atingimento trimestral</div>
+    <div class="form-row">
+      <label>Atingimento EV (%)</label>
+      <input type="range" min="0" max="160" step="5" id="sim-ev" value="100" oninput="calcSim()">
+      <span class="val" id="sim-ev-disp">100%</span>
+    </div>
+    <div class="form-row">
+      <label>Atingimento GC (%)</label>
+      <input type="range" min="0" max="160" step="5" id="sim-gc" value="90" oninput="calcSim()">
+      <span class="val" id="sim-gc-disp">90%</span>
+    </div>
+    <div class="form-row">
+      <label>Atingimento CS (%)</label>
+      <input type="range" min="0" max="160" step="5" id="sim-cs" value="80" oninput="calcSim()">
+      <span class="val" id="sim-cs-disp">80%</span>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:0">
+    <div class="card-title">Salário médio por papel</div>
+    <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);background:var(--teal-lt);display:inline-block;padding:3px 9px;border-radius:4px;margin-bottom:12px">Salário fixo mensal (R$)</div>
+    <div class="form-row">
+      <label>Salário médio EV (R$)</label>
+      <input type="range" min="3000" max="30000" step="500" id="sim-sal-ev" value="10000" oninput="calcSim()">
+      <span class="val" id="sim-sal-ev-disp">R$ 10.000</span>
+    </div>
+    <div class="form-row">
+      <label>Salário médio GC (R$)</label>
+      <input type="range" min="3000" max="30000" step="500" id="sim-sal-gc" value="8000" oninput="calcSim()">
+      <span class="val" id="sim-sal-gc-disp">R$ 8.000</span>
+    </div>
+    <div class="form-row">
+      <label>Salário médio CS (R$)</label>
+      <input type="range" min="3000" max="30000" step="500" id="sim-sal-cs" value="8000" oninput="calcSim()">
+      <span class="val" id="sim-sal-cs-disp">R$ 8.000</span>
+    </div>
+  </div>
+
+  <div class="metric-grid metric-grid-4" id="sim-metrics"></div>
+
+  <div class="card">
+    <div class="card-title">Detalhamento por papel</div>
+    <table class="tbl" id="sim-table"></table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">ARR reconhecido vs. custo — por pessoa / trimestre</div>
+    <div style="font-size:11px;color:var(--text-2);margin-bottom:10px">Valores individuais (por colaborador). Mesma escala para todos os papéis — comparação direta.</div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="sim-chart" role="img" aria-label="Comparativo de custo anualizado vs ARR reconhecido por papel">Custo vs ARR.</canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE: VALIDAÇÃO ════════════════════════════════════════ -->
+<div id="page-validacao" class="page">
+  <div class="page-header">
+    <div class="page-title">Validação do modelo</div>
+    <div class="page-sub">Checklist completo de critérios que tornam o modelo defensável junto ao board.</div>
+  </div>
+  <div class="card" id="validacao-card"></div>
+  <div class="card" style="margin-top:0">
+    <div class="card-title">FAQ — perguntas do board</div>
+    <div id="faq-list"></div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDaqWQFcCwar_xJ40lrrOH0OY9bKfRkyZA",
+    authDomain: "rv-comercial-framework.firebaseapp.com",
+    projectId: "rv-comercial-framework",
+    storageBucket: "rv-comercial-framework.firebasestorage.app",
+    messagingSenderId: "780003031647",
+    appId: "1:780003031647:web:911897c3a6268b9c8df9ea"
+  };
+
+  const fbApp = initializeApp(firebaseConfig);
+  const db = getFirestore(fbApp);
+  const CONFIG_DOC = doc(db, 'config', 'rv-framework');
+  const ATTR_DOC   = doc(db, 'config', 'atribuicao');
+
+  // Expose to global scope for use in main script
+  window._fb = { db, setDoc, getDoc, onSnapshot, CONFIG_DOC, ATTR_DOC };
+
+  // Load config on start
+  window.addEventListener('load', async () => {
+    try {
+      const snap = await getDoc(CONFIG_DOC);
+      if (snap.exists()) {
+        const data = snap.data();
+        Object.assign(window.S, data.state || {});
+        console.log('[Firebase] Configuração carregada.');
+      }
+      // Load attr weights
+      const attrSnap = await getDoc(ATTR_DOC);
+      if (attrSnap.exists() && attrSnap.data().rows) {
+        const saved = attrSnap.data().rows;
+        saved.forEach((r, i) => {
+          if (window.ATTR_ROWS[i]) {
+            window.ATTR_ROWS[i].ev = r.ev;
+            window.ATTR_ROWS[i].gc = r.gc;
+          }
+        });
+        console.log('[Firebase] Pesos de atribuição carregados.');
+      }
+      // Update UI sliders to match loaded state
+      window._syncSlidersFromState && window._syncSlidersFromState();
+      window.renderMeta && window.renderMeta();
+    } catch(e) {
+      console.warn('[Firebase] Erro ao carregar:', e.message);
+    }
+  });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ══ STATE ══════════════════════════════════════════════════════
+const S = window.S = {
+  meta: 900000, hcEV: 8, hcGC: 6, hcCS: 8, ataque: 70,
+  oteRole: 'ev', oteSal: 10000, oteMult: 3.0, oteAting: 100,
+  degrauMeth: 'equilibrado', anc50: 30, anc75: 65,
+  acc120: 130, accInc: 1.5, accCap: 200, sprintVal: 800,
+  rateioMeth: 'ataque_defesa',
+  simEV: 100, simGC: 90, simCS: 80,
+  simSalEV: 10000, simSalGC: 8000, simSalCS: 8000,
+};
+
+const ROLES = {
+  ev: {
+    nome:'Executivo de vendas (EV)', foco:'Novas receitas — novos CNPJs',
+    mult:3.0, mixFixo:40, color:'#185FA5', bg:'#E6F1FB',
+    metaTipo:'financeira',
+    metaDesc:'Cota de ARR novo (novas vendas, expansão das carteiras, novos CNPJs). Meta 100% financeira - sem indicadores de processo no primeiro momento.',
+    inds: null,
+  },
+  gc: {
+    nome:'Gerente de contas (GC)', foco:'Retenção + upsell na carteira',
+    mult:2.1, mixFixo:60, color:'#0F6E56', bg:'#E3FAF3',
+    metaTipo:'financeira',
+    metaDesc:'Cota de NRR (Net Revenue Retention). Meta 100% financeira — o NRR já captura expansão, retenção, churn, renovações e reajustes contratuais num único número auditável.',
+    inds: null,
+  },
+  cs: {
+    nome:'Customer success (CS)', foco:'Saúde e engajamento da base',
+    mult:1.2, mixFixo:70, color:'#7C3AED', bg:'#EDE9FE',
+    metaTipo:'indicadores',
+    metaDesc:'Sem cota financeira direta. RV calculado sobre atingimento de indicadores de saúde — cada indicador tem um peso e um alvo definido no início do trimestre.',
+    inds:[['Engajamento (DAU/MAU)','25%'],['Não-uso (NAU)','25%'],['Indicações p/ upsell','30%'],['NPS Operacional','20%']],
+  },
+};
+
+const DEGRAU_METHS = {
+  equilibrado:  { anc50:30, anc75:65, desc:'Padrão de mercado SaaS. Fator 30% em 50% de atingimento e 65% em 75% — protege margem abaixo da meta e garante pagamento material em qualquer nível. Defensável junto ao board.' },
+  custom:       { anc50:30, anc75:65, desc:'Ajuste os pontos âncora conforme a distribuição histórica do seu time. Regra: fator em 75% deve ser sempre maior que em 50%. Fator em 50% não deve cair abaixo de 15%.' },
+};
+
+const RATEIO_METHS = {
+  ataque_defesa:  { pesos:{ev:.70,gc:.30,cs:.00}, desc:'Divide a meta em ataque (70%, EV) e defesa (30%, GC). CS não carrega cota financeira — participa de receita exclusivamente via atribuição compartilhada.', quando:'Ideal para times novos' },
+  produtividade:  { pesos:{ev:.65,gc:.35,cs:.00}, desc:'Proporcional à produtividade esperada por papel dado o ticket médio, ciclo de vendas e carteira gerenciada.', quando:'Ideal quando há benchmarks de mercado' },
+  historico:      { pesos:{ev:.60,gc:.40,cs:.00}, desc:'Usa a proporção real de contribuição de receita dos últimos 3–4 trimestres. O mais honesto e auditável para o board.', quando:'Ideal com ≥2 trimestres de histórico' },
+};
+
+const ATTR_ROWS = window.ATTR_ROWS = [
+  { sc:'Novos CNPJs — puro outbound do EV',                                         ev:100, gc:0,  tipo:'positivo' },
+  { sc:'Expansão/upsell da carteira indicada pelo GC, fechada pelo EV',             ev:70,  gc:30, tipo:'positivo' },
+  { sc:'Expansão/upsell da carteira identificada pelo EV — EV opera sozinho',       ev:90,  gc:10, tipo:'positivo' },
+  { sc:'Reajustes contratuais e realinhamentos',                                    ev:0,   gc:100,tipo:'neutro'   },
+  { sc:'Cancelamentos, Renegociações Negativas, Não-Renovação e Suspensões',        ev:0,   gc:100,tipo:'negativo' },
+];
+
+let degrauChart=null, accChart=null, simChart=null;
+
+// ── UTILS ──────────────────────────────────────────────────────
+function fmt(v) {
+  if(Math.abs(v)>=1000000) return 'R$ '+(v/1000000).toFixed(1)+'M';
+  if(Math.abs(v)>=1000)    return 'R$ '+Math.round(v/1000)+'k';
+  return 'R$ '+Math.round(v);
+}
+function fmtFull(v) { return 'R$ '+Math.round(v).toLocaleString('pt-BR'); }
+function pctStr(v)  { return (v*100).toFixed(0)+'%'; }
+
+function rvFactor(pct, a50, a75) {
+  a50=a50/100; a75=a75/100;
+  if(pct<=0)   return 0;
+  if(pct<=50)  return (pct/50)*a50;
+  if(pct<=75)  return a50+((pct-50)/25)*(a75-a50);
+  if(pct<=100) return a75+((pct-75)/25)*(1-a75);
+  if(pct<=120) {
+    const f120 = S.acc120/100;
+    return 1+((pct-100)/20)*(f120-1);
+  }
+  const f120=S.acc120/100;
+  const raw = f120+((pct-120)/100)*S.accInc;
+  return Math.min(raw, S.accCap/100);
+}
+
+function pillColor(n) {
+  if(n===0)   return {bg:'#F3F4F6',fg:'#4B5563'};
+  if(n>=70)   return {bg:'#E6F1FB',fg:'#0C447C'};
+  if(n>=40)   return {bg:'#E3FAF3',fg:'#085041'};
+  return              {bg:'#FEF3C7',fg:'#633806'};
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────
+function goTo(id, navEl) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const page = document.getElementById('page-'+id);
+  if (page) page.classList.add('active');
+  // activate nav item
+  const el = navEl || (event && event.currentTarget) || document.querySelector(`[onclick*="goTo('${id}'"]`);
+  if (el && el.classList) el.classList.add('active');
+  renderPage(id);
+}
+
+function renderPage(id) {
+  if(id==='home')           renderHome();
+  if(id==='meta')          renderMeta();
+  if(id==='papeis')        renderPapeis();
+  if(id==='ote')           calcOte();
+  if(id==='degraus')       calcDegraus();
+  if(id==='aceleradores')  calcAcc();
+  if(id==='rateio')        calcRateio();
+  if(id==='atribuicao')    renderAtribuicao();
+  if(id==='simulador')     calcSim();
+  if(id==='validacao')     renderValidacao();
+}
+
+// Sync sliders to current S values (called after Firebase load)
+window._syncSlidersFromState = function() {
+  const set = (id, val) => { const el=document.getElementById(id); if(el) el.value=val; };
+  set('g-meta',  S.meta);   set('g-hc-ev', S.hcEV); set('g-hc-gc', S.hcGC);
+  set('g-hc-cs', S.hcCS);   set('g-ataque', S.ataque);
+  set('ote-sal', S.oteSal); set('ote-mult', S.oteMult); set('ote-ating', S.oteAting);
+  set('anc-50',  S.anc50);  set('anc-75',  S.anc75);
+  set('acc-120', S.acc120); set('acc-inc', S.accInc); set('acc-cap', S.accCap);
+  set('sprint-val', S.sprintVal);
+  set('sim-ev', S.simEV);   set('sim-gc',  S.simGC);  set('sim-cs', S.simCS);
+  set('sim-sal-ev', S.simSalEV); set('sim-sal-gc', S.simSalGC); set('sim-sal-cs', S.simSalCS);
+  // update display spans
+  document.getElementById('g-meta-disp') && (document.getElementById('g-meta-disp').textContent = fmtFull(S.meta));
+  document.getElementById('g-hc-ev-disp') && (document.getElementById('g-hc-ev-disp').textContent = S.hcEV+' pessoas');
+  document.getElementById('g-hc-gc-disp') && (document.getElementById('g-hc-gc-disp').textContent = S.hcGC+' pessoas');
+  document.getElementById('g-hc-cs-disp') && (document.getElementById('g-hc-cs-disp').textContent = S.hcCS+' pessoas');
+  document.getElementById('g-ataque-disp') && (document.getElementById('g-ataque-disp').textContent = S.ataque+'%');
+};
+
+// Save state to Firebase (debounced 1.5s)
+let _saveTimer = null;
+function fbSave() {
+  if (!window._fb) return;
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(async () => {
+    try {
+      await window._fb.setDoc(window._fb.CONFIG_DOC, { state: {...S}, updatedAt: new Date().toISOString() }, { merge: true });
+      _showSaveIndicator();
+    } catch(e) { console.warn('[Firebase] Erro ao salvar:', e.message); }
+  }, 1500);
+}
+
+function _showSaveIndicator() {
+  let el = document.getElementById('fb-save-indicator');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'fb-save-indicator';
+    el.style = 'position:fixed;bottom:20px;right:24px;background:#0D1B3E;color:#fff;font-size:12px;padding:8px 14px;border-radius:8px;z-index:9999;opacity:0;transition:opacity .3s;font-family:DM Sans,sans-serif;display:flex;align-items:center;gap:6px';
+    document.body.appendChild(el);
+  }
+  el.innerHTML = '☁️ Salvo no Firebase';
+  el.style.opacity = '1';
+  setTimeout(() => { el.style.opacity = '0'; }, 2500);
+}
+
+function updateAll() {
+  S.meta  = parseInt(document.getElementById('g-meta').value);
+  S.hcEV  = parseInt(document.getElementById('g-hc-ev').value);
+  S.hcGC  = parseInt(document.getElementById('g-hc-gc').value);
+  S.hcCS  = parseInt(document.getElementById('g-hc-cs').value);
+  S.ataque= parseInt(document.getElementById('g-ataque').value);
+  document.getElementById('g-meta-disp').textContent   = fmtFull(S.meta);
+  document.getElementById('g-hc-ev-disp').textContent  = S.hcEV+' pessoa'+(S.hcEV>1?'s':'');
+  document.getElementById('g-hc-gc-disp').textContent  = S.hcGC+' pessoa'+(S.hcGC>1?'s':'');
+  document.getElementById('g-hc-cs-disp').textContent  = S.hcCS+' pessoa'+(S.hcCS>1?'s':'');
+  document.getElementById('g-ataque-disp').textContent = S.ataque+'%';
+  fbSave();
+  renderMeta();
+}
+
+// ── META PAGE ──────────────────────────────────────────────────
+function renderMeta() {
+  const defesa = 100-S.ataque;
+  document.getElementById('meta-metrics').innerHTML = `
+    <div class="metric"><div class="metric-label">Meta/mês</div><div class="metric-val">${fmt(S.meta/3)}</div></div>
+    <div class="metric"><div class="metric-label">Total headcount</div><div class="metric-val">${S.hcEV+S.hcGC+S.hcCS} pessoas</div></div>
+    <div class="metric"><div class="metric-label">Meta por pessoa</div><div class="metric-val">${fmt(S.meta/(S.hcEV+S.hcGC+S.hcCS))}</div><div class="metric-sub">distribuída — não por igual</div></div>
+    <div class="metric"><div class="metric-label">Meta/EV individual</div><div class="metric-val">${fmt(S.meta*.70/S.hcEV)}</div><div class="metric-sub">método ataque/defesa</div></div>`;
+
+  document.getElementById('ataque-bar').innerHTML = `
+    <div class="stack-seg" style="flex:${S.ataque};background:#DC2626">Ataque ${S.ataque}%</div>
+    <div class="stack-seg" style="flex:${defesa};background:#0E9F6E">Defesa ${defesa}%</div>`;
+
+  document.getElementById('ataque-insight').textContent =
+    `Com ${S.ataque}% de ataque e ${defesa}% de defesa, o EV carrega a parte mais volátil da meta — por isso seu múltiplo (3,0×) é maior. `+
+    `O GC carrega a parte mais previsível — retenção e upsell — e por isso tem maior estabilidade no fixo (60%).`;
+}
+
+// ── PAPÉIS PAGE ────────────────────────────────────────────────
+function renderPapeis() {
+  const rk = ['ev','gc','cs'];
+  const roleTag = { ev:'ATAQUE', gc:'DEFESA', cs:'DEFESA' };
+  const roleTagColor = { ev:'#DC2626', gc:'#0E9F6E', cs:'#0E9F6E' };
+  const roleTagBg = { ev:'#FEE2E2', gc:'#E3FAF3', cs:'#E3FAF3' };
+  document.getElementById('papel-cards-page').innerHTML = rk.map(k=>{
+    const r=ROLES[k];
+    const varPct = 100-r.mixFixo;
+    const isFinanceiro = r.metaTipo==='financeira';
+    const badgeHtml = isFinanceiro
+      ? `<span style="display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;background:#E6F1FB;color:#0C447C;margin-bottom:8px">Meta 100% financeira</span>`
+      : `<span style="display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;background:#EDE9FE;color:#4C1D95;margin-bottom:8px">Meta por indicadores</span>`;
+    const metaBlock = isFinanceiro
+      ? `<div style="background:var(--bg);border-radius:6px;padding:10px 12px;font-size:11.5px;color:var(--text-2);line-height:1.6;margin-bottom:10px">${r.metaDesc}</div>`
+      : `<div style="background:var(--bg);border-radius:6px;padding:10px 12px;font-size:11.5px;color:var(--text-2);line-height:1.6;margin-bottom:10px">${r.metaDesc}</div>
+         ${r.inds.map(([i,p])=>`<div style="display:flex;justify-content:space-between;font-size:11.5px;padding:4px 0;border-bottom:1px solid #F3F4F6">
+           <span style="color:var(--text-2)">${i}</span><strong style="color:${r.color}">${p}</strong></div>`).join('')}`;
+    const tag = roleTag[k];
+    const tagColor = roleTagColor[k];
+    const tagBg = roleTagBg[k];
+    return `<div>
+      <div style="display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px 99px 0 0;background:${tagColor};color:#fff;letter-spacing:.06em;margin-bottom:-1px">${tag}</div>
+      <div class="papel-card" style="border-top:3px solid ${tagColor};border-radius:0 ${r.color===tagColor?'var(--radius)':''} var(--radius) var(--radius)">
+      <div class="papel-card-hdr" style="color:${r.color};margin-bottom:4px">${r.nome}</div>
+      <div class="papel-card-sub" style="margin-bottom:8px">${r.foco}</div>
+      ${badgeHtml}
+      ${metaBlock}
+      <div style="font-size:11px;color:var(--text-3);margin-top:10px">Múltiplo RV: <strong style="color:${r.color}">${r.mult.toFixed(1)}× / trimestre</strong></div>
+    </div></div>`;
+  }).join('');
+
+  // CS indicator scoring table
+  const csInds = [
+    { nome:'Engajamento (DAU/MAU)', peso:25, alvo:80, realizado: S.csHealthScore ?? 75 },
+    { nome:'Adoção features (DAU/MAU)', peso:25, alvo:60, realizado: S.csAdocao      ?? 52 },
+    { nome:'Não-uso (NAU)', peso:25, alvo:90, realizado: S.csChurn ?? 85 },
+    { nome:'NPS Operacional', peso:20, alvo:50, realizado: S.csNPS ?? 42 },
+  ];
+  let totalAting = 0;
+  const rows = csInds.map((ind,i)=>{
+    const ating = Math.min(ind.realizado/ind.alvo*100,160);
+    const contrib = ating * ind.peso/100;
+    totalAting += contrib;
+    const clr = ating>=100?'#085041':ating>=75?'#633806':'#7F1D1D';
+    const bg  = ating>=100?'#E3FAF3':ating>=75?'#FEF3C7':'#FEE2E2';
+    return `<tr>
+      <td style="color:var(--text)">${ind.nome}</td>
+      <td><strong style="color:#7C3AED">${ind.peso}%</strong></td>
+      <td style="color:var(--text-2)">${ind.alvo}</td>
+      <td><input type="number" min="0" max="200" value="${ind.realizado}" style="width:70px;padding:4px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:'DM Sans',sans-serif;font-variant-numeric:tabular-nums" onchange="updateCSInd(${i},this.value)"></td>
+      <td><span class="badge" style="background:${bg};color:${clr}">${ating.toFixed(0)}%</span></td>
+      <td style="font-family:'DM Sans',sans-serif;font-variant-numeric:tabular-nums;font-size:12px;font-weight:600;color:#7C3AED">${contrib.toFixed(1)}%</td>
+    </tr>`;
+  });
+  document.getElementById('cs-ind-table').innerHTML = rows.join('');
+  document.getElementById('cs-ating-total').textContent = totalAting.toFixed(1)+'%';
+  const {anc50:a50,anc75:a75}=getDegrauAnchors();
+  const fCS = rvFactor(totalAting,a50,a75);
+  document.getElementById('cs-ind-note').innerHTML =
+    `Atingimento ponderado <strong>${totalAting.toFixed(1)}%</strong> → fator do degrau <strong style="color:#7C3AED">${(fCS*100).toFixed(1)}%</strong> → RV paga = RV alvo × ${(fCS*100).toFixed(1)}%. `+
+    `Ajuste os valores "Realizado" para simular diferentes cenários de desempenho.`;
+
+  document.getElementById('mix-justificativa').innerHTML = `
+    <div class="accent-box info" style="margin-bottom:14px">
+      <strong>Modelo simplificado — fase 1:</strong> EV e GC têm meta 100% financeira, sem indicadores de processo. 
+      O CS usa indicadores porque não tem cota financeira direta — a variável é calculada sobre o atingimento ponderado dos indicadores de saúde. 
+      Indicadores de qualidade para EV e GC podem ser adicionados numa fase 2, quando houver histórico para calibrar o peso certo.
+    </div>
+    <div class="principle-row">
+      <div class="principle-icon" style="background:#E6F1FB;color:#185FA5">EV</div>
+      <div><div class="principle-title">EV: meta financeira pura — ARR novo</div>
+      <div class="principle-body">Cota de ARR de novos CNPJs. O EV bate ou não bate. RV calculado pelo degrau sobre o atingimento financeiro. Simples, auditável, sem ambiguidade. O mix 40/60 reflete o controle direto do EV sobre o resultado.</div></div>
+    </div>
+    <div class="principle-row">
+      <div class="principle-icon" style="background:#E3FAF3;color:#0F6E56">GC</div>
+      <div><div class="principle-title">GC: meta financeira pura — NRR</div>
+      <div class="principle-body">Cota de NRR (Net Revenue Retention). O NRR captura expansão, retenção e churn num único número — a métrica financeira mais completa para o GA. Se o NRR está em 110%, o GA cresceu a base e reteve..</div></div>
+    </div>
+    <div class="principle-row">
+      <div class="principle-icon" style="background:#EDE9FE;color:#7C3AED">CS</div>
+      <div><div class="principle-title">CS: meta por indicadores de saúde</div>
+      <div class="principle-body">Sem cota financeira direta. O RV é calculado sobre o atingimento ponderado dos 4 indicadores — cada um com seu alvo definido no início do trimestre. O atingimento médio ponderado entra na curva de degraus normalmente..</div></div>
+    </div>`;
+}
+
+// ── CS INDICATOR UPDATE ────────────────────────────────────────
+function updateCSInd(idx, val) {
+  if(!S.csIndsRealizado) S.csIndsRealizado=[75,52,85,42];
+  S.csIndsRealizado[idx]=parseFloat(val)||0;
+  const csInds=[
+    {nome:'Engajamento (DAU/MAU)',peso:25,alvo:80,realizado:S.csIndsRealizado[0]},
+    {nome:'Adoção features (DAU/MAU)',peso:25,alvo:60,realizado:S.csIndsRealizado[1]},
+    {nome:'Não-uso (NAU)',peso:25,alvo:90,realizado:S.csIndsRealizado[2]},
+    {nome:'NPS Operacional',peso:20,alvo:50,realizado:S.csIndsRealizado[3]},
+  ];
+  let totalAting=0;
+  csInds.forEach((ind,i)=>{
+    const ating=Math.min(ind.realizado/ind.alvo*100,160);
+    const contrib=ating*ind.peso/100;
+    totalAting+=contrib;
+    const clr=ating>=100?'#085041':ating>=75?'#633806':'#7F1D1D';
+    const bg=ating>=100?'#E3FAF3':ating>=75?'#FEF3C7':'#FEE2E2';
+    const rows=document.getElementById('cs-ind-table').rows;
+    if(rows[i]){
+      rows[i].cells[4].innerHTML=`<span class="badge" style="background:${bg};color:${clr}">${ating.toFixed(0)}%</span>`;
+      rows[i].cells[5].textContent=contrib.toFixed(1)+'%';
+    }
+  });
+  document.getElementById('cs-ating-total').textContent=totalAting.toFixed(1)+'%';
+  const {anc50:a50,anc75:a75}=getDegrauAnchors();
+  const fCS=rvFactor(totalAting,a50,a75);
+  document.getElementById('cs-ind-note').innerHTML=
+    `Atingimento ponderado <strong>${totalAting.toFixed(1)}%</strong> → fator do degrau <strong style="color:#7C3AED">${(fCS*100).toFixed(1)}%</strong> → RV paga = RV alvo × ${(fCS*100).toFixed(1)}%. `+
+    `Ajuste os valores "Realizado" para simular diferentes cenários de desempenho.`;
+}
+
+// ── OTE PAGE ───────────────────────────────────────────────────
+const ROLE_SAL_DEFAULTS = { ev:10000, gc:8000, cs:8000 };
+function setOteRole(role, btn) {
+  S.oteRole = role;
+  document.querySelectorAll('#ote-tabs .pill-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  const r = ROLES[role];
+  const salDefault = ROLE_SAL_DEFAULTS[role];
+  document.getElementById('ote-sal').value = salDefault;
+  document.getElementById('ote-sal-disp').textContent = 'R$ ' + salDefault.toLocaleString('pt-BR');
+  document.getElementById('ote-mult').value = r.mult;
+  S.oteMult = r.mult;
+  S.oteSal = salDefault;
+  calcOte();
+}
+
+function calcOte() {
+  S.oteSal   = parseInt(document.getElementById('ote-sal').value);
+  S.oteMult  = parseFloat(document.getElementById('ote-mult').value);
+  S.oteAting = parseInt(document.getElementById('ote-ating').value);
+  document.getElementById('ote-sal-disp').textContent   = fmtFull(S.oteSal);
+  fbSave();
+  document.getElementById('ote-mult-disp').textContent  = S.oteMult.toFixed(1)+'×';
+  document.getElementById('ote-ating-disp').textContent = S.oteAting+'%';
+
+  const {anc50,anc75} = getDegrauAnchors();
+  const rvAlvo = S.oteSal * S.oteMult;
+  const fator  = rvFactor(S.oteAting, anc50, anc75);
+  const rvPaga = rvAlvo * fator;
+  const fixoTri= S.oteSal*3;
+  const totalTri = fixoTri+rvPaga;
+
+  document.getElementById('formula-rv-alvo').textContent = fmtFull(rvAlvo);
+  document.getElementById('formula-fator').textContent   = (fator*100).toFixed(1)+'%';
+  document.getElementById('formula-rv-paga').textContent = fmtFull(rvPaga);
+  document.getElementById('ote-verify').textContent      =
+    S.oteAting===100
+      ? `✓ Em 100% de atingimento: fator = 100% → RV paga = ${fmtFull(rvPaga)} = RV alvo exato.`
+      : `Com ${S.oteAting}% de atingimento: fator ${(fator*100).toFixed(1)}% → RV paga ${fmtFull(rvPaga)} de ${fmtFull(rvAlvo)} alvo.`;
+
+  const c = ROLES[S.oteRole].color;
+  document.getElementById('ote-metrics').innerHTML = `
+    <div class="metric"><div class="metric-label">RV alvo / trimestre</div><div class="metric-val" style="color:${c}">${fmt(rvAlvo)}</div><div class="metric-sub">${S.oteMult.toFixed(1)}× × ${fmt(S.oteSal)}</div></div>
+    <div class="metric"><div class="metric-label">RV paga</div><div class="metric-val" style="color:${S.oteAting>=100?'#0F6E56':S.oteAting>=75?'#D97706':'#DC2626'}">${fmt(rvPaga)}</div><div class="metric-sub">fator ${(fator*100).toFixed(1)}%</div></div>
+    <div class="metric"><div class="metric-label">Total recebido / tri</div><div class="metric-val">${fmt(totalTri)}</div><div class="metric-sub">fixo + RV</div></div>
+    <div class="metric"><div class="metric-label">Equivalente / mês</div><div class="metric-val">${fmt(totalTri/3)}</div><div class="metric-sub">média trimestral</div></div>`;
+
+  const atings=[25,50,75,100,120,150];
+  document.getElementById('ote-cenarios').innerHTML = atings.map(a=>{
+    const f=rvFactor(a,anc50,anc75);
+    const rv=rvAlvo*f;
+    const tot=fixoTri+rv;
+    const clr = a>=100?'#085041':a>=75?'#633806':'#7F1D1D';
+    const bg  = a>=100?'#E3FAF3':a>=75?'#FEF3C7':'#FEE2E2';
+    return `<div class="sc-row">
+      <span style="color:var(--text-2)">${a}% de atingimento</span>
+      <div style="display:flex;gap:16px;align-items:center">
+        <span style="font-size:11px;color:var(--text-3)">RV ${fmtFull(rv)}</span>
+        <strong style="font-size:13px">${fmtFull(tot)}/tri</strong>
+        <span class="badge" style="background:${bg};color:${clr}">${(f*100).toFixed(0)}% do RV alvo</span>
+      </div></div>`;
+  }).join('');
+
+  document.getElementById('ote-referencia').innerHTML = `
+    <table class="tbl"><thead><tr><th>Papel</th><th>Meta</th><th>OTE típico/ano</th><th>Múltiplo tri</th><th>Faixa de salário</th></tr></thead><tbody>
+      <tr><td>Executivo de vendas</td><td><span class="badge badge-blue">ARR novo</span></td><td><strong style="color:#185FA5">R$ 180k–350k</strong></td><td>3,0×</td><td>R$ 10k–22k/mês</td></tr>
+      <tr><td>Gerente de contas</td><td><span class="badge badge-teal">NRR</span></td><td><strong style="color:#0F6E56">R$ 150k–270k</strong></td><td>2,1×</td><td>R$ 9k–17k/mês</td></tr>
+      <tr><td>Customer success</td><td><span class="badge badge-purple">Indicadores</span></td><td><strong style="color:#7C3AED">R$ 120k–220k</strong></td><td>1,2×</td><td>R$ 8k–14k/mês</td></tr>
+    </tbody></table>
+    <div class="accent-box info" style="margin-top:10px">
+      <strong>EV e GC:</strong> atingimento = (receita fechada / cota) × 100. Entra direto na curva de degraus.<br>
+      <strong>CS:</strong> atingimento = média ponderada dos 4 indicadores. Ex: health score 90% do alvo (peso 30%) + adoção 80% (peso 25%) + churn 95% (peso 25%) + NPS 85% (peso 20%) = atingimento ponderado de ~87,25%. Esse número entra na curva de degraus normalmente.
+    </div>`;
+}
+
+// ── DEGRAUS PAGE ───────────────────────────────────────────────
+function getDegrauAnchors() {
+  if(S.degrauMeth==='custom') return { anc50:S.anc50, anc75:S.anc75 };
+  const m = DEGRAU_METHS[S.degrauMeth];
+  return { anc50:m.anc50, anc75:m.anc75 };
+}
+
+function setDegrauMeth(meth, btn) {
+  S.degrauMeth=meth;
+  fbSave();
+  document.querySelectorAll('#degrau-meth-tabs .pill-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('degrau-custom-controls').style.display = meth==='custom'?'block':'none';
+  calcDegraus();
+}
+
+function calcDegraus() {
+  if(S.degrauMeth==='custom') {
+    S.anc50=parseInt(document.getElementById('anc-50').value);
+    S.anc75=parseInt(document.getElementById('anc-75').value);
+    document.getElementById('anc-50-disp').textContent=S.anc50+'%';
+    document.getElementById('anc-75-disp').textContent=S.anc75+'%';
+  }
+  const {anc50,anc75} = getDegrauAnchors();
+  const m = DEGRAU_METHS[S.degrauMeth];
+
+  document.getElementById('degrau-pontos').innerHTML = `
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${[{p:'0%',f:'0%',c:'#6B7280'},{p:'50%',f:anc50+'%',c:'#DC2626'},{p:'75%',f:anc75+'%',c:'#D97706'},{p:'100%',f:'100%',c:'#0E9F6E'},{p:'120%',f:S.acc120+'%',c:'#1A56DB'}].map(pt=>
+        `<div style="background:${pt.c}12;border:1px solid ${pt.c}40;border-radius:6px;padding:6px 12px;text-align:center">
+          <div style="font-size:10px;color:var(--text-2)">${pt.p} meta</div>
+          <div style="font-size:15px;font-weight:600;color:${pt.c}">${pt.f}</div>
+          <div style="font-size:9.5px;color:var(--text-3)">do RV alvo</div>
+        </div>`).join('')}
+    </div>`;
+
+  document.getElementById('degrau-insight').textContent = m.desc;
+
+  const labels=[], data=[], dataLinear=[];
+  for(let p=0;p<=150;p+=5) {
+    labels.push(p+'%');
+    data.push(Math.round(rvFactor(p,anc50,anc75)*100));
+    dataLinear.push(Math.min(p,150));
+  }
+
+  if(degrauChart) degrauChart.destroy();
+  degrauChart = new Chart(document.getElementById('degrau-chart'),{
+    type:'line',
+    data:{ labels, datasets:[
+      {label:'Modelo selecionado',data,borderColor:'#185FA5',backgroundColor:'rgba(26,86,219,.07)',fill:true,tension:.3,pointRadius:0,borderWidth:2},
+      {label:'Linear puro',data:dataLinear,borderColor:'#9CA3AF',fill:false,tension:0,pointRadius:0,borderWidth:1.5,borderDash:[4,3]},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.raw+'%'}}},
+      scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#9CA3AF',font:{size:10},maxTicksLimit:10}},
+              y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#9CA3AF',font:{size:10},callback:v=>v+'%'},min:0,max:170}}}
+  });
+
+  const ok=(v)=>v?'✓':'✗';
+  const p1=true, p2=anc50>=15&&anc50<=45, p3=anc75>anc50, p4=(100-anc75)>=(anc75-anc50), p5=true;
+  document.getElementById('principios-list').innerHTML = [
+    {ok:p1,t:'100% de atingimento = 100% do RV alvo — sempre',b:`Não negociável. Em 100%: fator = 100% exato. Verificável em planilha.`},
+    {ok:p2,t:'Fator em 50% é material, não simbólico',b:`${anc50}% está ${p2?'dentro do':'FORA DO'} intervalo defensável (15%–45%). ${!p2?'Ajuste para evitar efeito desmotivador ou subsídio de underperformance.':''}`},
+    {ok:p3,t:'Curva sempre crescente',b:`${anc50}% → ${anc75}% → 100%: progressão ${p3?'estritamente crescente ✓':'com problema — anc75 deve ser maior que anc50 ✗'}.`},
+    {ok:p4,t:'Salto maior perto da meta cria urgência',b:`Diferença 75%→100%: ${100-anc75} pts. Diferença 50%→75%: ${anc75-anc50} pts. ${p4?'✓ Correto — concentra incentivo perto da meta.':'✗ Inverter: o salto perto da meta deve ser maior.'}`},
+    {ok:p5,t:'Aceleradores assimétricos recompensam top performers',b:`Acima de 100%: fator cresce para ${S.acc120}% em 120%. Curva super-linear acima da meta. Cap em ${S.accCap}% protege o P&L.`},
+  ].map(p=>`<div class="principle-row">
+    <div class="principle-icon" style="background:${p.ok?'#E3FAF3':'#FEE2E2'};color:${p.ok?'#085041':'#7F1D1D'}">${p.ok?'✓':'✗'}</div>
+    <div><div class="principle-title">${p.t}</div><div class="principle-body">${p.b}</div></div>
+  </div>`).join('');
+}
+
+// ── ACELERADORES PAGE ──────────────────────────────────────────
+function calcAcc() {
+  S.acc120    = parseInt(document.getElementById('acc-120').value);
+  S.accInc    = parseFloat(document.getElementById('acc-inc').value);
+  S.accCap    = parseInt(document.getElementById('acc-cap').value);
+  S.sprintVal = parseInt(document.getElementById('sprint-val').value);
+  document.getElementById('acc-120-disp').textContent  = S.acc120+'%';
+  document.getElementById('acc-inc-disp').textContent  = S.accInc.toFixed(1)+'%';
+  document.getElementById('acc-cap-disp').textContent  = S.accCap+'%';
+  document.getElementById('sprint-val-disp').textContent = fmtFull(S.sprintVal);
+  fbSave();
+
+  const capAt = 120+((S.accCap/100-S.acc120/100)/S.accInc*100);
+  document.getElementById('acc-metrics').innerHTML = `
+    <div class="metric"><div class="metric-label">Fator em 120%</div><div class="metric-val" style="color:#185FA5">${S.acc120}%</div><div class="metric-sub">do RV alvo</div></div>
+    <div class="metric"><div class="metric-label">Ganho por pt % extra</div><div class="metric-val" style="color:#0E9F6E">${S.accInc.toFixed(1)}%</div><div class="metric-sub">do RV alvo</div></div>
+    <div class="metric"><div class="metric-label">Cap atingido em</div><div class="metric-val" style="color:#7C3AED">${Math.round(capAt)}%</div><div class="metric-sub">de atingimento</div></div>`;
+
+  const {anc50,anc75}=getDegrauAnchors();
+  const labels=[],data=[];
+  for(let p=0;p<=Math.min(capAt+10,200);p+=5) {
+    labels.push(p+'%');
+    data.push(Math.round(rvFactor(p,anc50,anc75)*100));
+  }
+  if(accChart) accChart.destroy();
+  accChart = new Chart(document.getElementById('acc-chart'),{
+    type:'bar',
+    data:{labels,datasets:[{data,backgroundColor:data.map(v=>v>=100?'rgba(14,159,110,.7)':v>=65?'rgba(217,119,6,.6)':'rgba(220,38,38,.6)'),borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw+'% do RV alvo'}}},
+      scales:{x:{grid:{display:false},ticks:{color:'#9CA3AF',font:{size:10}}},
+              y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#9CA3AF',font:{size:10},callback:v=>v+'%'}}}}
+  });
+
+  document.getElementById('sprint-insight').innerHTML =
+    `Sprint bônus de <strong>${fmtFull(S.sprintVal)}/deal</strong> pago independente do atingimento total. `+
+    `Um vendedor a 55% da meta que fecha 3 deals extras recebe ${fmtFull(S.sprintVal*3)} adicionais — permanece motivado mesmo longe da meta. `+
+    `Custo máximo trimestral capável pelo gestor.`;
+}
+
+// ── RATEIO PAGE ────────────────────────────────────────────────
+function setRateio(meth, btn) {
+  S.rateioMeth=meth;
+  fbSave();
+  document.querySelectorAll('#rateio-tabs .pill-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  calcRateio();
+}
+
+function calcRateio() {
+  const m = RATEIO_METHS[S.rateioMeth];
+  const {ev:pEV,gc:pGC,cs:pCS}=m.pesos;
+  const cotaEVtot=S.meta*pEV, cotaGCtot=S.meta*pGC, cotaCStot=S.meta*pCS;
+  const cotaEVind=cotaEVtot/S.hcEV, cotaGCind=cotaGCtot/S.hcGC, cotaCSind=cotaCStot/S.hcCS;
+
+  document.getElementById('rateio-desc-card').innerHTML = `
+    <div class="card-title">Método: ${['Ataque / Defesa','Produtividade esperada','Histórico de contribuição'][['ataque_defesa','produtividade','historico'].indexOf(S.rateioMeth)]}</div>
+    <p style="font-size:12.5px;color:var(--text-2);line-height:1.6;margin-bottom:12px">${m.desc}</p>
+    <div class="stack-bar">
+      <div class="stack-seg" style="flex:${pEV*100};background:#185FA5">EV ${Math.round(pEV*100)}%</div>
+      <div class="stack-seg" style="flex:${pGC*100};background:#0E9F6E">GC ${Math.round(pGC*100)}%</div>
+      <div class="stack-seg" style="flex:${pCS*100};background:#7C3AED">CS ${Math.round(pCS*100)}%</div>
+    </div>
+    <div style="font-size:11px;color:var(--text-3);margin-top:4px">${m.quando}</div>`;
+
+  const papeis=[
+    {k:'ev',nome:'Executivo de vendas',hc:S.hcEV,tot:cotaEVtot,ind:cotaEVind,color:'#185FA5',bg:'#E6F1FB',mult:3.0},
+    {k:'gc',nome:'Gerente de contas (GC)',hc:S.hcGC,tot:cotaGCtot,ind:cotaGCind,color:'#0F6E56',bg:'#E3FAF3',mult:2.1},
+    {k:'cs',nome:'Customer success',   hc:S.hcCS,tot:cotaCStot,ind:cotaCSind,color:'#7C3AED',bg:'#EDE9FE',mult:1.2},
+  ];
+
+  document.getElementById('rateio-cotas').innerHTML = papeis.map(p=>`
+    <div class="papel-card" style="border-top:3px solid ${p.color}">
+      <div class="papel-card-hdr" style="color:${p.color}">${p.nome} · ${p.hc} pessoa${p.hc>1?'s':''}</div>
+      <div style="font-size:10.5px;color:var(--text-2);margin-bottom:10px">Peso: ${Math.round(m.pesos[p.k]*100)}% da meta global</div>
+      <div style="font-size:11px;color:var(--text-3)">Cota total do grupo</div>
+      <div style="font-size:18px;font-weight:600;color:${p.color};margin:2px 0">${fmtFull(p.tot)}</div>
+      <div style="border-top:1px solid #F3F4F6;margin:10px 0 8px"></div>
+      <div style="font-size:11px;color:var(--text-3)">Cota individual / trimestre</div>
+      <div style="font-size:20px;font-weight:600;color:var(--text);margin:2px 0">${fmtFull(p.ind)}</div>
+      <div style="font-size:10px;color:var(--text-3)">${fmt(p.ind/3)}/mês equivalente</div>
+      <div class="bar-mini" style="background:${p.color};width:${Math.round(m.pesos[p.k]*100)}%"></div>
+    </div>`).join('');
+
+  const soma = cotaEVtot+cotaGCtot+cotaCStot;
+  const diff = soma-S.meta;
+  document.getElementById('rateio-verificacao').innerHTML = `
+    <div class="verify-row"><span style="color:var(--text-2)">EV total (${S.hcEV}×)</span><strong style="color:#185FA5">${fmtFull(cotaEVtot)}</strong></div>
+    <div class="verify-row"><span style="color:var(--text-2)">GC total (${S.hcGC}×)</span><strong style="color:#0F6E56">${fmtFull(cotaGCtot)}</strong></div>
+    <div class="verify-row"><span style="color:var(--text-2)">CS total (${S.hcCS}×)</span><strong style="color:#7C3AED">${fmtFull(cotaCStot)}</strong></div>
+    <div class="verify-row" style="border-top:1px solid var(--border);margin-top:4px;padding-top:10px"><span style="font-weight:600">Soma das cotas</span><strong>${fmtFull(soma)}</strong></div>
+    <div class="verify-row"><span style="color:var(--text-2)">Meta global</span><span>${fmtFull(S.meta)}</span></div>
+    <div class="accent-box ${Math.abs(diff)<S.meta*.01?'success':diff>0?'warn':'danger'}" style="margin-top:10px">
+      ${Math.abs(diff)<S.meta*.01
+        ?'✓ Cotas somem exatamente a meta global. Modelo sem sobreposição.'
+        :diff>0
+        ?`Sobreposição de ${fmtFull(diff)} — intencional quando vendas compartilhadas contam para mais de um papel via splits. Explique ao board: soma das cotas ≠ receita esperada.`
+        :`Cotas somam ${fmtFull(Math.abs(diff))} a menos que a meta. Há receita sem dono — revise os pesos.`}
+    </div>`;
+
+  document.getElementById('rateio-salario').innerHTML = papeis.map(p=>{
+    const salImpl=p.ind/p.mult;
+    return `<div class="sc-row">
+      <span style="color:var(--text-2)">${p.nome} — cota ${fmtFull(p.ind)} ÷ ${p.mult.toFixed(1)}×</span>
+      <span>salário implícito <strong style="color:${p.color}">${fmtFull(salImpl)}/mês</strong></span>
+    </div>`;
+  }).join('');
+}
+
+// ── ATRIBUIÇÃO PAGE ────────────────────────────────────────────
+function renderAtribuicao() {
+  let html='<thead><tr><th>Cenário de venda</th><th style="text-align:center;width:120px">EV</th><th style="text-align:center;width:120px">GC</th></tr></thead><tbody>';
+  ATTR_ROWS.forEach((r,i)=>{
+    const isNeg = r.tipo==='negativo';
+    const isNeutro = r.tipo==='neutro';
+    const bg = isNeg
+      ? 'background:#FFF0F0;border-left:3px solid #DC2626'
+      : isNeutro
+        ? 'background:#FFFBEB;border-left:3px solid #D97706'
+        : (i%2===0?'':'background:#FAFAFA');
+    const scContent = isNeg
+      ? `<td style="color:#DC2626;font-weight:600">⚠ ${r.sc}</td>`
+      : isNeutro
+        ? `<td style="color:#92400E;font-weight:500">${r.sc}</td>`
+        : `<td>${r.sc}</td>`;
+    html+=`<tr style="${bg}">
+      ${scContent}
+      ${[r.ev,r.gc].map(v=>{
+        const c=pillColor(v);
+        return `<td style="text-align:center"><span class="attr-pill" style="background:${c.bg};color:${c.fg}">${v}%</span></td>`;
+      }).join('')}
+    </tr>`;
+  });
+  html+='</tbody>';
+  document.getElementById('attr-table').innerHTML=html;
+
+  // Build editable rows using stored ATTR_ROWS values
+  let customHtml = `<div class="accent-box info" style="margin-bottom:14px">
+    Ajuste os splits por linha. Os valores de cada linha devem somar 100%.
+    Clique em <strong>Salvar pesos</strong> para confirmar. A tabela principal é atualizada automaticamente.
+  </div>`;
+  ATTR_ROWS.forEach((r,i)=>{
+    const isNeg = r.tipo==='negativo';
+    const isNeutro = r.tipo==='neutro';
+    const rowBg = isNeg?'#FFF0F0':isNeutro?'#FFFBEB':'var(--bg)';
+    const rowBorder = isNeg?'#FECACA':isNeutro?'#FCD34D':'var(--border)';
+    const labelClr = isNeg?'#DC2626':isNeutro?'#92400E':'var(--text)';
+    const prefix = isNeg?'⚠ ':isNeutro?'':'';
+    customHtml += `<div style="margin-bottom:8px;padding:10px 12px;background:${rowBg};border-radius:6px;border:1px solid ${rowBorder}">
+      <div style="font-size:11.5px;font-weight:${(isNeg||isNeutro)?'600':'500'};color:${labelClr};margin-bottom:8px">${prefix}${r.sc}</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        ${['EV','GC'].map((p,j)=>{
+          const v=[r.ev,r.gc][j];
+          const clr=['#185FA5','#0F6E56'][j];
+          return `<div style="flex:1;text-align:center">
+            <div style="font-size:10px;margin-bottom:3px;font-weight:600;color:${clr}">${p}</div>
+            <input type="number" min="0" max="100" value="${v}" data-row="${i}" data-col="${j}"
+              style="width:100%;text-align:center;border:1px solid ${clr}44;border-radius:4px;padding:6px 4px;font-size:15px;font-weight:600;color:${clr};background:var(--white);font-family:'DM Sans',sans-serif;font-variant-numeric:tabular-nums"
+              oninput="validateAttrRow(this)">
+          </div>`;
+        }).join('')}
+        <div style="flex:0 0 60px;text-align:center">
+          <div style="font-size:10px;color:var(--text-3);margin-bottom:3px">Soma</div>
+          <div id="attr-sum-${i}" style="font-size:13px;font-weight:600;padding:6px 4px;border-radius:4px;background:var(--white);border:1px solid var(--border)">100%</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  customHtml += `<button onclick="saveAttrWeights()" style="margin-top:10px;width:100%;padding:10px;background:#0D1B3E;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif">
+    💾 Salvar pesos e atualizar tabela</button>
+  <div id="attr-save-msg" style="margin-top:6px;font-size:11px;text-align:center;color:var(--text-3)"></div>`;
+  document.getElementById('attr-custom').innerHTML = customHtml;
+  // update sums on load
+  ATTR_ROWS.forEach((_,i)=>updateAttrSum(i));
+}
+
+// ── SIMULADOR PAGE ─────────────────────────────────────────────
+function calcSim() {
+  S.simEV    = parseInt(document.getElementById('sim-ev').value);
+  S.simGC    = parseInt(document.getElementById('sim-gc').value);
+  S.simCS    = parseInt(document.getElementById('sim-cs').value);
+  S.simSalEV = parseInt(document.getElementById('sim-sal-ev').value);
+  S.simSalGC = parseInt(document.getElementById('sim-sal-gc').value);
+  S.simSalCS = parseInt(document.getElementById('sim-sal-cs').value);
+  document.getElementById('sim-ev-disp').textContent    = S.simEV+'%';
+  document.getElementById('sim-gc-disp').textContent    = S.simGC+'%';
+  document.getElementById('sim-cs-disp').textContent    = S.simCS+'%';
+  document.getElementById('sim-sal-ev-disp').textContent= fmtFull(S.simSalEV);
+  document.getElementById('sim-sal-gc-disp').textContent= fmtFull(S.simSalGC);
+  document.getElementById('sim-sal-cs-disp').textContent= fmtFull(S.simSalCS);
+  fbSave();
+
+  const m=RATEIO_METHS[S.rateioMeth];
+  const {anc50,anc75}=getDegrauAnchors();
+
+  const papeis=[
+    {k:'ev',nome:'EV',hc:S.hcEV,sal:S.simSalEV,mult:3.0,ating:S.simEV,p:m.pesos.ev,color:'#185FA5'},
+    {k:'gc',nome:'GC',hc:S.hcGC,sal:S.simSalGC,mult:2.1,ating:S.simGC,p:m.pesos.gc,color:'#0F6E56',tipo:'gc'},
+    {k:'cs',nome:'CS',hc:S.hcCS,sal:S.simSalCS,mult:1.2,ating:S.simCS,p:m.pesos.cs,color:'#7C3AED'},
+  ];
+
+  let totalFixo=0,totalRV=0,totalRec=0;
+  const rows=papeis.map(p=>{
+    const cotaInd = S.meta*p.p/p.hc;
+    const rvAlvo  = p.sal*p.mult;
+    const fator   = rvFactor(p.ating,anc50,anc75);
+    const rvPaga  = rvAlvo*fator;
+    const fixoTri = p.sal*3;
+    const rec     = cotaInd*p.ating/100;
+    totalFixo += fixoTri*p.hc;
+    totalRV   += rvPaga*p.hc;
+    totalRec  += rec*p.hc;
+    return {...p, cotaInd, rvAlvo, fator, rvPaga, fixoTri, rec};
+  });
+
+  const totalComp = totalFixo+totalRV;
+  const pctCusto  = totalComp/S.meta*100;
+  const recVsMeta = totalRec/S.meta*100;
+
+  const totalRecARR = totalRec * 4;
+  // Custo total vs ARR: (fixo tri + RV tri) / ARR reconhecido
+  const pctCustoARR = totalRecARR > 0 ? (totalComp / totalRecARR) * 100 : 0;
+  document.getElementById('sim-metrics').innerHTML = `
+    <div class="metric"><div class="metric-label">ARR reconhecido (×4)</div><div class="metric-val" style="color:${recVsMeta>=100?'#0F6E56':recVsMeta>=75?'#D97706':'#DC2626'}">${fmt(totalRecARR)}</div><div class="metric-sub">${recVsMeta.toFixed(0)}% da meta tri · ${fmt(totalRec)} no trimestre</div></div>
+    <div class="metric"><div class="metric-label">Custo fixo / tri</div><div class="metric-val">${fmt(totalFixo)}</div><div class="metric-sub">${fmt(totalFixo*4)} / ano</div></div>
+    <div class="metric"><div class="metric-label">Custo RV / tri</div><div class="metric-val">${fmt(totalRV)}</div><div class="metric-sub">${fmt(totalRV*4)} / ano</div></div>
+    <div class="metric"><div class="metric-label">Custo total vs. ARR</div><div class="metric-val" style="color:${pctCustoARR<=35?'#0F6E56':pctCustoARR<=50?'#D97706':'#DC2626'}">${pctCustoARR.toFixed(0)}%</div><div class="metric-sub">benchmark: 20%–35% do ARR</div></div>`;
+
+  document.getElementById('sim-table').innerHTML=`
+    <thead><tr><th>Papel</th><th>Ating.</th><th>Cota ind.</th><th>RV alvo/tri</th><th>RV paga/tri</th><th>Fixo 3m</th><th>Custo/tri</th><th>ARR reconhecido (×4)</th></tr></thead>
+    <tbody>${rows.map(p=>`<tr>
+      <td><strong style="color:${p.color}">${p.nome}</strong> ×${p.hc}</td>
+      <td><span class="badge" style="background:${p.ating>=100?'#E3FAF3':p.ating>=75?'#FEF3C7':'#FEE2E2'};color:${p.ating>=100?'#085041':p.ating>=75?'#633806':'#7F1D1D'}">${p.ating}%</span></td>
+      <td>${fmt(p.cotaInd)}</td>
+      <td>${fmt(p.rvAlvo)}</td>
+      <td style="color:${p.color};font-weight:500">${fmt(p.rvPaga)}</td>
+      <td>${fmt(p.fixoTri)}</td>
+      <td><strong>${fmt((p.fixoTri+p.rvPaga)*p.hc)}</strong></td>
+      <td style="color:#0F6E56;font-weight:500">${fmt(p.rec*p.hc*4)}</td>
+    </tr>`).join('')}</tbody>`;
+
+  // Gráfico: valores POR PESSOA para que a mesma escala seja comparável entre papéis
+  const labels=rows.map(p=>`${p.nome}\n(×${p.hc} · ${fmt(p.sal)}/mês)`);
+  const dataRec=rows.map(p=>Math.round(p.rec*4));           // ARR por pessoa
+  const dataCusto=rows.map(p=>Math.round(p.fixoTri+p.rvPaga)); // custo tri por pessoa
+  if(simChart) simChart.destroy();
+  simChart=new Chart(document.getElementById('sim-chart'),{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'ARR reconhecido por pessoa (×4)',data:dataRec,backgroundColor:'rgba(14,159,110,.7)',borderWidth:0},
+      {label:'Custo trimestral por pessoa (fixo+RV)',data:dataCusto,backgroundColor:'rgba(26,86,219,.55)',borderWidth:0},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{
+        title: ctx => ctx[0].label.replace('\n',' '),
+        label: ctx => ctx.dataset.label+': '+fmt(ctx.raw)
+      }}},
+      scales:{
+        x:{grid:{display:false},ticks:{color:'#9CA3AF',font:{size:10}}},
+        y:{beginAtZero:true,min:0,
+           max: Math.ceil(Math.max(...dataRec,...dataCusto)*1.15/50000)*50000,
+           grid:{color:'rgba(0,0,0,.05)'},
+           ticks:{color:'#9CA3AF',font:{size:10},callback:v=>fmt(v)}}}}
+  });
+  const lgnd=document.getElementById('sim-chart').parentNode;
+  const existingLgnd = lgnd.querySelector('.sim-legend');
+  if(existingLgnd) existingLgnd.remove();
+  const l=document.createElement('div');
+  l.className='sim-legend';
+  l.style='display:flex;gap:16px;font-size:11px;color:var(--text-2);margin-bottom:6px';
+  l.innerHTML=`<span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(14,159,110,.7);border-radius:2px;display:inline-block"></span>ARR reconhecido por pessoa (×4)</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(26,86,219,.55);border-radius:2px;display:inline-block"></span>Custo tri por pessoa (fixo+RV)</span>`;
+  lgnd.insertBefore(l,lgnd.firstChild);
+}
+
+// ── ATTR WEIGHTS ──────────────────────────────────────────────
+function updateAttrSum(rowIdx) {
+  const inputs = document.querySelectorAll(`input[data-row="${rowIdx}"]`);
+  let sum = 0;
+  inputs.forEach(inp => sum += parseInt(inp.value)||0);
+  const el = document.getElementById('attr-sum-'+rowIdx);
+  if (!el) return;
+  el.textContent = sum+'%';
+  el.style.color = sum===100 ? '#0F6E56' : '#DC2626';
+  el.style.borderColor = sum===100 ? '#6EE7B7' : '#FECACA';
+}
+
+function validateAttrRow(input) {
+  const row = parseInt(input.dataset.row);
+  updateAttrSum(row);
+}
+
+function saveAttrWeights() {
+  let allValid = true;
+  ATTR_ROWS.forEach((r,i)=>{
+    const inputs = document.querySelectorAll(`input[data-row="${i}"]`);
+    const vals = Array.from(inputs).map(inp=>parseInt(inp.value)||0);
+    const sum = vals.reduce((a,b)=>a+b,0);
+    if (sum !== 100) { allValid = false; return; }
+    r.ev = vals[0]; r.gc = vals[1];
+  });
+  const msgEl = document.getElementById('attr-save-msg');
+  if (!allValid) {
+    msgEl.textContent = '⚠ Algumas linhas não somam 100%. Corrija antes de salvar.';
+    msgEl.style.color = '#DC2626';
+    return;
+  }
+  // Rebuild main table
+  renderAtribuicao();
+  msgEl.textContent = '✓ Pesos salvos e tabela atualizada com sucesso.';
+  msgEl.style.color = '#0F6E56';
+  setTimeout(()=>{ msgEl.textContent=''; }, 3000);
+  // Save attr rows to Firebase
+  if (window._fb) {
+    const rows = ATTR_ROWS.map(r=>({ev:r.ev, gc:r.gc, sc:r.sc, tipo:r.tipo||null}));
+    window._fb.setDoc(window._fb.ATTR_DOC, { rows, updatedAt: new Date().toISOString() })
+      .then(()=>{ _showSaveIndicator(); })
+      .catch(e=>console.warn('[Firebase] Erro attr:', e.message));
+  }
+}
+
+// ── VALIDAÇÃO PAGE ─────────────────────────────────────────────
+function renderValidacao() {
+  const {anc50,anc75}=getDegrauAnchors();
+  const checks=[
+    {ok:true,                         t:'RV alvo pago em 100% de atingimento',     b:'Fator exato de 100% em 100% de atingimento — verificável em planilha a qualquer momento.'},
+    {ok:anc50>=15&&anc50<=45,         t:`Fator em 50% dentro do intervalo (${anc50}%)`,b:`Intervalo defensável: 15%–45%. ${anc50>=15&&anc50<=45?'Dentro ✓':'FORA ✗ — ajuste nos degraus.'}`},
+    {ok:anc75>anc50,                  t:'Curva crescente — cada ponto vale mais',   b:`${anc50}% → ${anc75}% → 100%: ${anc75>anc50?'progressão estritamente crescente ✓':'problema: ajuste anc75 > anc50 ✗'}`},
+    {ok:(100-anc75)>=(anc75-anc50),   t:'Salto maior perto da meta',               b:`Diferença 75%→100%: ${100-anc75}pts. Diferença 50%→75%: ${anc75-anc50}pts. ${(100-anc75)>=(anc75-anc50)?'Correto ✓':'Reverter — salto perto da meta deve ser ≥ salto longe ✗'}`},
+    {ok:S.accCap<=250,                t:`Cap em ${S.accCap}% do RV alvo`,           b:`${S.accCap<=250?'Cap razoável — protege o P&L ✓':'Cap muito alto — board pode questionar a exposição ✗'}`},
+    {ok:true,                         t:'Atribuição de receita pré-definida',       b:'Tabela de splits aprovada antes do trimestre e registrada no CRM. Sem disputas caso a caso.'},
+    {ok:S.hcEV>=1&&S.hcGC>=1&&S.hcCS>=1,t:'Headcount mínimo por papel',           b:`EV: ${S.hcEV}, GC: ${S.hcGC}, CS: ${S.hcCS}. Todos os papéis ativos.`},
+  ];
+
+  const pass=checks.filter(c=>c.ok).length;
+  document.getElementById('validacao-card').innerHTML = `
+    <div class="card-title">Checklist do modelo — ${pass}/${checks.length} critérios ok</div>
+    <div style="margin-bottom:14px">
+      <div style="background:var(--bg);border-radius:6px;height:8px;overflow:hidden">
+        <div style="background:${pass===checks.length?'#0E9F6E':'#D97706'};width:${pass/checks.length*100}%;height:100%;transition:width .3s"></div>
+      </div>
+    </div>
+    ${checks.map(c=>`<div class="principle-row">
+      <div class="principle-icon" style="background:${c.ok?'#E3FAF3':'#FEE2E2'};color:${c.ok?'#085041':'#7F1D1D'}">${c.ok?'✓':'✗'}</div>
+      <div><div class="principle-title">${c.t}</div><div class="principle-body">${c.b}</div></div>
+    </div>`).join('')}`;
+
+  const faqs=[
+    {q:'Por que pagar RV abaixo do piso?',a:'O custo de turnover (3–6 meses de salário por reposição) supera o diferencial de RV. O degrau é um seguro, não um subsídio.'},
+    {q:'Como garantir que atribuição não vira disputa?',a:'Tabela aprovada pelo board antes do trimestre e registrada no CRM. Nenhuma venda negociada caso a caso — a regra é prévia, pública e auditável.'},
+    {q:'Por que 30% em 50% e não 20% ou 40%?',a:'Intervalo defensável SaaS: 15%–45%. Abaixo de 15% o efeito comportamental desaparece. 30% é ponto médio conservador-equilibrado, calibrável com histórico.'},
+    {q:'O CS não deveria ter meta de receita?',a:'CS com cota de receita vira um segundo GC — perde o foco no produto. Participa de receita via atribuição compartilhada, não via cota própria.'},
+    {q:'Qual o risco do acelerador explodir o P&L?',a:`Cap em ${S.accCap}% do RV alvo limita a exposição máxima. CFO consegue provisionar o pior e o melhor cenário com precisão. Acima do cap: bônus discricionário.`},
+    {q:'A soma das cotas pode ser maior que a meta?',a:'Sim — é intencional quando vendas compartilhadas contam para mais de um papel via splits. A soma das cotas é o potencial máximo atribuído, não a receita esperada.'},
+  ];
+  document.getElementById('faq-list').innerHTML=faqs.map(f=>`
+    <div style="padding:12px 0;border-bottom:1px solid #F3F4F6">
+      <div style="font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:4px">${f.q}</div>
+      <div style="font-size:12px;color:var(--text-2);line-height:1.6">${f.a}</div>
+    </div>`).join('');
+}
+
+
+// ── HOME PAGE ──────────────────────────────────────────────────
+function renderHome() {
+  const features = [
+    {
+      icon: '⚔',
+      color: '#DC2626',
+      colorLt: '#FEE2E2',
+      tag: 'ATAQUE',
+      tagBg: '#DC2626',
+      title: 'Modelo de Ataque e Defesa',
+      desc: 'A meta global é dividida em duas frentes com responsabilidades claras. O Executivo de Vendas lidera o ataque — novas receitas, novos CNPJs. O Gerente de Contas lidera a defesa — retenção e NRR. O CS não carrega cota financeira: atua via saúde da base e atribuição compartilhada.',
+      detail: '70% ataque · 30% defesa',
+      cta: 'meta',
+      ctaLabel: 'Configurar meta →',
+      bullets: ['EV: foco em novas vendas, expansão das carteiras e novos CNPJs','GC: foco em NRR e retenção da carteira','CS: sem cota financeira — participa via splits de atribuição'],
+    },
+    {
+      icon: '🎯',
+      color: '#1A56DB',
+      colorLt: '#E6F1FB',
+      tag: 'RATEIO',
+      tagBg: '#1A56DB',
+      title: 'Meta rateada por papel',
+      desc: 'A meta trimestral não é dividida igualmente — cada papel carrega um peso proporcional ao seu potencial de geração de receita. A cota individual é calculada automaticamente a partir do múltiplo salarial de cada função.',
+      detail: 'EV 3,0× · GC 2,1× · CS 1,2× por trimestre',
+      cta: 'rateio',
+      ctaLabel: 'Ver rateio →',
+      bullets: ['Cota individual = meta × peso ÷ headcount','Múltiplo salarial como âncora do RV alvo','Salário base implícito calculado automaticamente'],
+    },
+    {
+      icon: '🔀',
+      color: '#0E9F6E',
+      colorLt: '#E3FAF3',
+      tag: 'ATRIBUIÇÃO',
+      tagBg: '#0E9F6E',
+      title: 'Atribuição de receita compartilhada',
+      desc: 'Quando uma venda envolve mais de um papel, a receita é repartida conforme uma tabela de splits pré-definida e registrada no CRM antes do trimestre. Sem disputas, sem negociação caso a caso.',
+      detail: '7 cenários de atribuição pré-definidos',
+      cta: 'atribuicao',
+      ctaLabel: 'Ver tabela →',
+      bullets: ['Splits por tipo de venda (outbound, upsell, indicação…)','Cancelamentos e não-renovações: GC 80% · CS 20%','Aprovado pelo board antes do trimestre começar'],
+    },
+    {
+      icon: '📈',
+      color: '#7C3AED',
+      colorLt: '#EDE9FE',
+      tag: 'DEGRAUS',
+      tagBg: '#7C3AED',
+      title: 'Degraus progressivos',
+      desc: 'Nenhum mês é mês perdido. O RV é pago de forma progressiva a partir do primeiro deal fechado — a taxa aumenta conforme o atingimento avança. Em 100% da meta, o colaborador recebe o RV alvo integral.',
+      detail: '0–50%: 30% · 51–75%: 65% · 76–100%: 100%',
+      cta: 'degraus',
+      ctaLabel: 'Calibrar degraus →',
+      bullets: ['Fator 30% do RV alvo já em 50% de atingimento','Curva crescente — cada deal sempre vale algo','Aceleradores de 130% acima de 120% da meta'],
+    },
+    {
+      icon: '⚡',
+      color: '#D97706',
+      colorLt: '#FEF3C7',
+      tag: 'SPRINT',
+      tagBg: '#D97706',
+      title: 'Bônus por vendas realizadas',
+      desc: 'O Sprint Bônus é um valor fixo pago por deal fechado, independente do atingimento total da meta. Mantém o time ativo e motivado mesmo em períodos difíceis — cada venda gera retorno imediato.',
+      detail: 'Pago por deal · acumula com o RV da meta',
+      cta: 'aceleradores',
+      ctaLabel: 'Configurar sprint →',
+      bullets: ['Valor fixo por negócio fechado (ex: R$ 800)','Independente do atingimento trimestral','Custo máximo previsível e capado pelo gestor'],
+    },
+  ];
+
+  const html = `
+  <div style="max-width:960px">
+
+    <!-- Hero -->
+    <div style="background:linear-gradient(135deg,#0D1B3E 60%,#1A56DB);border-radius:16px;padding:40px 44px;margin-bottom:28px;position:relative;overflow:hidden">
+      <div style="position:absolute;right:-40px;top:-40px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.04)"></div>
+      <div style="position:absolute;right:60px;bottom:-60px;width:180px;height:180px;border-radius:50%;background:rgba(14,159,110,.12)"></div>
+      <div style="position:relative;z-index:1">
+        <div style="display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:99px;padding:4px 14px;font-size:11px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px">Framework de Remuneração Variável</div>
+        <h1 style="font-size:32px;font-weight:700;color:#fff;margin-bottom:12px;line-height:1.15;font-family:DM Sans,sans-serif">Um modelo simples,<br>justo e auditável.</h1>
+        <p style="font-size:15px;color:rgba(255,255,255,.6);max-width:520px;line-height:1.65;margin-bottom:28px">Estruture a remuneração variável do seu time comercial com critérios claros, metas rateadas por papel e incentivos que mantêm todos no jogo — do primeiro deal ao batimento da meta.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button onclick="goTo('meta')" style="background:#1A56DB;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;transition:background .15s" onmouseover="this.style.background='#1648c0'" onmouseout="this.style.background='#1A56DB'">
+            Configurar modelo →
+          </button>
+          <button onclick="goTo('simulador')" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif">
+            Ver simulador
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px">
+      ${[
+        {label:'Papéis no modelo', val:'3', sub:'EV · GC · CS'},
+        {label:'Meta default/tri', val:fmt(S.meta), sub:'ajustável'},
+        {label:'Headcount total',  val:S.hcEV+S.hcGC+S.hcCS+' pessoas', sub:`${S.hcEV} EV · ${S.hcGC} GC · ${S.hcCS} CS`},
+        {label:'Múltiplo máximo',  val:'3,0×', sub:'Exec. de vendas/tri'},
+      ].map(s=>`
+        <div style="background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:14px 16px">
+          <div style="font-size:11px;color:#9CA3AF;font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">${s.label}</div>
+          <div style="font-size:20px;font-weight:700;color:#111827;margin-bottom:2px">${s.val}</div>
+          <div style="font-size:11px;color:#6B7280">${s.sub}</div>
+        </div>`).join('')}
+    </div>
+
+    <!-- Features grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+      ${features.slice(0,4).map(f=>`
+        <div style="background:#fff;border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)">
+          <div style="padding:18px 20px 0">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px">
+              <div style="width:42px;height:42px;border-radius:10px;background:${f.colorLt};display:flex;align-items:center;justify-content:center;font-size:20px">${f.icon}</div>
+              <span style="background:${f.tagBg};color:#fff;font-size:9.5px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.07em">${f.tag}</span>
+            </div>
+            <div style="font-size:14.5px;font-weight:700;color:#111827;margin-bottom:6px">${f.title}</div>
+            <div style="font-size:12.5px;color:#6B7280;line-height:1.6;margin-bottom:12px">${f.desc}</div>
+            ${f.bullets.map(b=>`<div style="display:flex;gap:7px;align-items:flex-start;margin-bottom:5px">
+              <span style="width:5px;height:5px;border-radius:50%;background:${f.color};margin-top:5px;flex-shrink:0"></span>
+              <span style="font-size:12px;color:#374151">${b}</span>
+            </div>`).join('')}
+          </div>
+          <div style="padding:12px 20px;margin-top:12px;border-top:1px solid #F3F4F6;display:flex;justify-content:space-between;align-items:center;background:#FAFAFA">
+            <span style="font-size:11px;font-weight:600;color:${f.color};font-family:'DM Sans',sans-serif;letter-spacing:.01em">${f.detail}</span>
+            <button onclick="goTo('${f.cta}',document.querySelector('[onclick*=goTo\'${f.cta}\']'))" style="font-size:12px;font-weight:600;color:${f.color};background:transparent;border:none;cursor:pointer;font-family:DM Sans,sans-serif;padding:0">${f.ctaLabel}</button>
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <!-- Sprint bonus full width -->
+    <div style="background:#fff;border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex">
+      <div style="background:linear-gradient(135deg,#D97706,#F59E0B);width:6px;flex-shrink:0"></div>
+      <div style="padding:20px 24px;flex:1;display:flex;align-items:center;gap:24px">
+        <div style="width:48px;height:48px;border-radius:12px;background:#FEF3C7;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">⚡</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span style="font-size:15px;font-weight:700;color:#111827">${features[4].title}</span>
+            <span style="background:#D97706;color:#fff;font-size:9.5px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.07em">SPRINT</span>
+          </div>
+          <div style="font-size:12.5px;color:#6B7280;line-height:1.6;max-width:600px">${features[4].desc}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:11px;font-weight:600;color:#D97706;font-family:'DM Sans',sans-serif;letter-spacing:.01em;margin-bottom:8px">${features[4].detail}</div>
+          <button onclick="goTo('aceleradores')" style="background:#D97706;color:#fff;border:none;border-radius:7px;padding:8px 16px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif">
+            Configurar sprint →
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>`;
+
+  document.getElementById('home-content').innerHTML = html;
+}
+
+// ── INIT ────────────────────────────────────────────────────────
+renderHome();
+renderMeta();
+
+// Update Firebase connection status indicator
+setTimeout(()=>{
+  const dot  = document.getElementById('fb-dot');
+  const text = document.getElementById('fb-status-text');
+  if (!dot || !text) return;
+  if (window._fb) {
+    dot.style.background  = '#34D399';
+    text.textContent = 'Firebase conectado';
+    text.style.color = 'rgba(255,255,255,.5)';
+  } else {
+    dot.style.background  = '#F87171';
+    text.textContent = 'Offline';
+  }
+}, 2000);
+</script>
+</body>
+</html>
