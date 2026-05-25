@@ -1,1 +1,5 @@
-{"rewrites":[{"source":"/","destination":"/rv_framework_app.html"}]}
+{
+  "rewrites": [
+    { "source": "/", "destination": "/rv_framework_app.html" }
+  ]
+}
