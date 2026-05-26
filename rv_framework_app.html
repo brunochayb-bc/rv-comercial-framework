@@ -1054,10 +1054,10 @@ function updateAll() {
 function renderMeta() {
   const defesa = 100-S.ataque;
   document.getElementById('meta-metrics').innerHTML = `
-    <div class="metric"><div class="metric-label">Meta/mês</div><div class="metric-val">${fmt(S.meta/3)}</div></div>
     <div class="metric"><div class="metric-label">Total headcount</div><div class="metric-val">${S.hcEV+S.hcGC+S.hcCS} pessoas</div></div>
-    <div class="metric"><div class="metric-label">Meta por pessoa</div><div class="metric-val">${fmt(S.meta/(S.hcEV+S.hcGC+S.hcCS))}</div><div class="metric-sub">distribuída — não por igual</div></div>
-    <div class="metric"><div class="metric-label">Meta/EV individual</div><div class="metric-val">${fmt(S.meta*.70/S.hcEV)}</div><div class="metric-sub">método ataque/defesa</div></div>`;
+    <div class="metric"><div class="metric-label">Meta/mês</div><div class="metric-val">${fmt(S.meta/3)}</div></div>
+    <div class="metric"><div class="metric-label">Meta por pessoa/mês</div><div class="metric-val">${fmt(S.meta/(S.hcEV+S.hcGC+S.hcCS)/3)}</div><div class="metric-sub">distribuída — não por igual</div><div style="display:inline-block;margin-top:6px;font-size:10px;font-weight:600;color:#1D4ED8;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:4px;padding:2px 8px">Tri: ${fmt(S.meta/(S.hcEV+S.hcGC+S.hcCS))}</div></div>
+    <div class="metric"><div class="metric-label">Meta/EV individual por mês</div><div class="metric-val">${fmt(S.meta*.70/S.hcEV/3)}</div><div class="metric-sub">método ataque/defesa</div><div style="display:inline-block;margin-top:6px;font-size:10px;font-weight:600;color:#1D4ED8;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:4px;padding:2px 8px">Tri: ${fmt(S.meta*.70/S.hcEV)}</div></div>`;
 
   document.getElementById('ataque-bar').innerHTML = `
     <div class="stack-seg" style="flex:${S.ataque};background:#DC2626">Ataque ${S.ataque}%</div>
