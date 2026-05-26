@@ -754,40 +754,48 @@
         <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);background:var(--teal-lt);display:inline-block;padding:3px 9px;border-radius:4px;margin-bottom:12px">Salário fixo mensal (R$)</div>
         <div class="form-row">
           <label>Salário médio EV (R$)</label>
-          <input type="range" min="3000" max="30000" step="500" id="sim-sal-ev" value="10000" oninput="calcSim()">
-          <span class="val" id="sim-sal-ev-disp">R$ 10.000</span>
+          <input type="range" min="3000" max="30000" step="500" id="sim-sal-ev" value="9000" oninput="calcSim()">
+          <span class="val" id="sim-sal-ev-disp">R$ 9.000</span>
         </div>
         <div class="form-row">
           <label>Salário médio GC (R$)</label>
-          <input type="range" min="3000" max="30000" step="500" id="sim-sal-gc" value="8000" oninput="calcSim()">
-          <span class="val" id="sim-sal-gc-disp">R$ 8.000</span>
+          <input type="range" min="3000" max="30000" step="500" id="sim-sal-gc" value="8500" oninput="calcSim()">
+          <span class="val" id="sim-sal-gc-disp">R$ 8.500</span>
         </div>
         <div class="form-row">
           <label>Salário médio CS (R$)</label>
-          <input type="range" min="3000" max="30000" step="500" id="sim-sal-cs" value="8000" oninput="calcSim()">
-          <span class="val" id="sim-sal-cs-disp">R$ 8.000</span>
+          <input type="range" min="3000" max="30000" step="500" id="sim-sal-cs" value="6000" oninput="calcSim()">
+          <span class="val" id="sim-sal-cs-disp">R$ 6.000</span>
         </div>
       </div>
 
-      <!-- Box referência de mercado -->
-      <div style="min-width:180px;background:var(--amber-lt);border:1px solid #FDE68A;border-radius:var(--radius);padding:14px 16px;align-self:center">
-        <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--amber);margin-bottom:10px">📊 Indicativo de mercado</div>
-        <div style="font-size:11px;color:var(--text-2);margin-bottom:2px">Referência SaaS Brasil</div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-            <span style="font-size:12px;font-weight:600;color:var(--text)">EV</span>
-            <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px">R$ 15.000</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-            <span style="font-size:12px;font-weight:600;color:var(--text)">GC</span>
-            <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px">R$ 12.000</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-            <span style="font-size:12px;font-weight:600;color:var(--text)">CS</span>
-            <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px">R$ 9.000</span>
-          </div>
+      <!-- Box comparativo de remuneração -->
+      <div style="min-width:320px;background:var(--amber-lt);border:1px solid #FDE68A;border-radius:var(--radius);padding:14px 16px;align-self:center">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--amber);margin-bottom:10px">📊 Comparativo de remuneração</div>
+        <!-- Cabeçalho colunas -->
+        <div style="display:grid;grid-template-columns:40px 1fr 1fr;gap:8px;margin-bottom:6px">
+          <div></div>
+          <div style="font-size:10px;font-weight:700;color:#92400E;text-align:center">Médias atuais</div>
+          <div style="font-size:10px;font-weight:700;color:#1D4ED8;text-align:center">Indicativo mercado</div>
         </div>
-        <div style="font-size:10px;color:var(--text-3);margin-top:10px;line-height:1.5">Salário médio de referência - mercado SaaS B2B, 2025</div>
+        <div style="font-size:9px;color:var(--text-3);text-align:right;margin-bottom:8px;padding-right:2px">SaaS B2B · 2025</div>
+        <!-- Linhas -->
+        <div style="display:grid;grid-template-columns:40px 1fr 1fr;gap:8px;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;color:var(--text)">EV</span>
+          <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px;text-align:center">R$ 9.185</span>
+          <span style="font-size:12px;font-weight:700;color:#1E40AF;background:#EFF6FF;border:1px solid #BFDBFE;padding:2px 8px;border-radius:4px;text-align:center">R$ 15.000</span>
+        </div>
+        <div style="display:grid;grid-template-columns:40px 1fr 1fr;gap:8px;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;color:var(--text)">GC</span>
+          <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px;text-align:center">R$ 8.348</span>
+          <span style="font-size:12px;font-weight:700;color:#1E40AF;background:#EFF6FF;border:1px solid #BFDBFE;padding:2px 8px;border-radius:4px;text-align:center">R$ 12.000</span>
+        </div>
+        <div style="display:grid;grid-template-columns:40px 1fr 1fr;gap:8px;align-items:center">
+          <span style="font-size:12px;font-weight:700;color:var(--text)">CS</span>
+          <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px;text-align:center">R$ 6.024</span>
+          <span style="font-size:12px;font-weight:700;color:#1E40AF;background:#EFF6FF;border:1px solid #BFDBFE;padding:2px 8px;border-radius:4px;text-align:center">R$ 9.000</span>
+        </div>
+        <div style="font-size:9px;color:var(--text-3);margin-top:10px;line-height:1.5;border-top:1px solid #FDE68A;padding-top:8px">Médias aproximadas atuais · Salário médio de referência - mercado SaaS B2B, 2025</div>
       </div>
     </div>
   </div>
@@ -886,7 +894,7 @@ const S = window.S = {
   acc120: 130, accInc: 1.5, accCap: 200, sprintVal: 800,
   rateioMeth: 'ataque_defesa',
   simEV: 100, simGC: 90, simCS: 80,
-  simSalEV: 10000, simSalGC: 8000, simSalCS: 8000,
+  simSalEV: 9000, simSalGC: 8500, simSalCS: 6000,
 };
 
 const ROLES = {
