@@ -656,11 +656,33 @@
 
   <div class="card">
     <div class="card-title" style="color:#DC2626;font-size:13px;letter-spacing:.04em">⚡ SPRINT BÔNUS (COMPLEMENTO OPCIONAL)</div>
-    <div class="form-row">
+
+    <!-- Toggle modo -->
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button id="sprint-mode-fixed" onclick="setSprintMode('fixed')"
+        style="flex:1;padding:7px 0;border-radius:6px;border:1.5px solid #DC2626;background:#DC2626;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif">
+        R$ fixo por deal
+      </button>
+      <button id="sprint-mode-pct" onclick="setSprintMode('pct')"
+        style="flex:1;padding:7px 0;border-radius:6px;border:1.5px solid #DC2626;background:#fff;color:#DC2626;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif">
+        % do valor da venda
+      </button>
+    </div>
+
+    <!-- Modo: valor fixo -->
+    <div id="sprint-fixed-row" class="form-row">
       <label>Valor fixo por deal fechado (R$)</label>
       <input type="range" min="200" max="3000" step="100" id="sprint-val" value="800" oninput="calcAcc()">
       <span class="val" id="sprint-val-disp">R$ 800</span>
     </div>
+
+    <!-- Modo: percentual -->
+    <div id="sprint-pct-row" class="form-row" style="display:none">
+      <label>Percentual do valor da venda (%)</label>
+      <input type="range" min="0.5" max="10" step="0.5" id="sprint-pct" value="2" oninput="calcAcc()">
+      <span class="val" id="sprint-pct-disp">2,0%</span>
+    </div>
+
     <div class="accent-box purple" id="sprint-insight"></div>
   </div>
 </div>
@@ -891,7 +913,7 @@ const S = window.S = {
   meta: 900000, hcEV: 8, hcGC: 6, hcCS: 8, ataque: 70,
   oteRole: 'ev', oteSal: 10000, oteMult: 3.0, oteAting: 100,
   degrauMeth: 'equilibrado', anc50: 30, anc75: 65,
-  acc120: 130, accInc: 1.5, accCap: 200, sprintVal: 800,
+  acc120: 130, accInc: 1.5, accCap: 200, sprintVal: 800, sprintPct: 2, sprintMode: 'fixed',
   rateioMeth: 'ataque_defesa',
   simEV: 100, simGC: 90, simCS: 80,
   simSalEV: 9000, simSalGC: 8500, simSalCS: 6000,
@@ -1340,15 +1362,28 @@ function calcDegraus() {
 }
 
 // ── ACELERADORES PAGE ──────────────────────────────────────────
+function setSprintMode(mode) {
+  S.sprintMode = mode;
+  document.getElementById('sprint-fixed-row').style.display = mode==='fixed' ? '' : 'none';
+  document.getElementById('sprint-pct-row').style.display   = mode==='pct'   ? '' : 'none';
+  document.getElementById('sprint-mode-fixed').style.background = mode==='fixed' ? '#DC2626' : '#fff';
+  document.getElementById('sprint-mode-fixed').style.color      = mode==='fixed' ? '#fff'    : '#DC2626';
+  document.getElementById('sprint-mode-pct').style.background   = mode==='pct'   ? '#DC2626' : '#fff';
+  document.getElementById('sprint-mode-pct').style.color        = mode==='pct'   ? '#fff'    : '#DC2626';
+  calcAcc();
+}
+
 function calcAcc() {
   S.acc120    = parseInt(document.getElementById('acc-120').value);
   S.accInc    = parseFloat(document.getElementById('acc-inc').value);
   S.accCap    = parseInt(document.getElementById('acc-cap').value);
   S.sprintVal = parseInt(document.getElementById('sprint-val').value);
+  S.sprintPct = parseFloat(document.getElementById('sprint-pct').value);
   document.getElementById('acc-120-disp').textContent  = S.acc120+'%';
   document.getElementById('acc-inc-disp').textContent  = S.accInc.toFixed(1)+'%';
   document.getElementById('acc-cap-disp').textContent  = S.accCap+'%';
   document.getElementById('sprint-val-disp').textContent = fmtFull(S.sprintVal);
+  document.getElementById('sprint-pct-disp').textContent = S.sprintPct.toFixed(1).replace('.',',')+'%';
   fbSave();
 
   const capAt = 120+((S.accCap/100-S.acc120/100)/S.accInc*100);
@@ -1372,10 +1407,17 @@ function calcAcc() {
               y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#9CA3AF',font:{size:10},callback:v=>v+'%'}}}}
   });
 
-  document.getElementById('sprint-insight').innerHTML =
-    `Sprint bônus de <strong>${fmtFull(S.sprintVal)}/deal</strong> pago independente do atingimento total. `+
-    `Um vendedor a 55% da meta que fecha 3 deals extras recebe ${fmtFull(S.sprintVal*3)} adicionais — permanece motivado mesmo longe da meta. `+
-    `Custo máximo trimestral capável pelo gestor.`;
+  if (S.sprintMode === 'fixed') {
+    document.getElementById('sprint-insight').innerHTML =
+      `Sprint bônus de <strong>${fmtFull(S.sprintVal)}/deal</strong> pago independente do atingimento total. `+
+      `Um vendedor a 55% da meta que fecha 3 deals extras recebe ${fmtFull(S.sprintVal*3)} adicionais — permanece motivado mesmo longe da meta. `+
+      `Custo máximo trimestral capável pelo gestor.`;
+  } else {
+    document.getElementById('sprint-insight').innerHTML =
+      `Sprint bônus de <strong>${S.sprintPct.toFixed(1).replace('.',',')}% do valor de cada deal</strong> fechado, pago independente do atingimento total. `+
+      `Ex: deal de ${fmtFull(50000)} gera bônus de ${fmtFull(50000*S.sprintPct/100)} imediato. `+
+      `Incentiva tickets maiores e mantém o time motivado em qualquer nível de atingimento.`;
+  }
 }
 
 // ── RATEIO PAGE ────────────────────────────────────────────────
