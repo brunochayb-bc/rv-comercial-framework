@@ -525,7 +525,7 @@
   </div>
 
   <div class="pill-tabs" id="ote-tabs">
-    <button class="pill-tab active" onclick="setOteRole('ev',this)">Executivo de vendas</button>
+    <button class="pill-tab active" onclick="setOteRole('ev',this)">Executivo de Vendas (EV)</button>
     <button class="pill-tab" onclick="setOteRole('gc',this)">Gerente de contas (GC)</button>
     <button class="pill-tab" onclick="setOteRole('cs',this)">Customer success</button>
   </div>
@@ -1267,8 +1267,14 @@ function calcOte() {
     return `<div class="sc-row">
       <span style="color:var(--text-2)">${a}% de atingimento</span>
       <div style="display:flex;gap:16px;align-items:center">
-        <span style="font-size:11px;color:var(--text-3)">RV ${fmtFull(rv)}</span>
-        <strong style="font-size:13px">${fmtFull(tot)}/tri</strong>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px">
+          <span style="font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3)">RV Estimada</span>
+          <span style="font-size:11px;color:var(--text-3)">${fmtFull(rv)}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px">
+          <span style="font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3)">Total Comp Previsto</span>
+          <strong style="font-size:13px">${fmtFull(tot)}/tri</strong>
+        </div>
         <span class="badge" style="background:${bg};color:${clr}">${(f*100).toFixed(0)}% do RV alvo</span>
       </div></div>`;
   }).join('');
