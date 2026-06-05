@@ -770,56 +770,51 @@
   </div>
 
   <div class="card" style="margin-top:0">
-    <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
-      <div style="flex:1;min-width:280px">
-        <div class="card-title">Salário médio por papel</div>
-        <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);background:var(--teal-lt);display:inline-block;padding:3px 9px;border-radius:4px;margin-bottom:12px">Salário fixo mensal (R$)</div>
-        <div class="form-row">
-          <label>Salário médio EV (R$)</label>
-          <input type="range" min="3000" max="30000" step="500" id="sim-sal-ev" value="9000" oninput="calcSim()">
-          <span class="val" id="sim-sal-ev-disp">R$ 9.000</span>
-        </div>
-        <div class="form-row">
-          <label>Salário médio GC (R$)</label>
-          <input type="range" min="3000" max="30000" step="500" id="sim-sal-gc" value="8500" oninput="calcSim()">
-          <span class="val" id="sim-sal-gc-disp">R$ 8.500</span>
-        </div>
-        <div class="form-row">
-          <label>Salário médio CS (R$)</label>
-          <input type="range" min="3000" max="30000" step="500" id="sim-sal-cs" value="6000" oninput="calcSim()">
-          <span class="val" id="sim-sal-cs-disp">R$ 6.000</span>
-        </div>
-      </div>
+    <div class="card-title">Salário médio por papel</div>
+    <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);background:var(--teal-lt);display:inline-block;padding:3px 9px;border-radius:4px;margin-bottom:16px">Salário fixo mensal (R$)</div>
 
-      <!-- Box comparativo de remuneração -->
-      <div style="min-width:320px;background:var(--amber-lt);border:1px solid #FDE68A;border-radius:var(--radius);padding:14px 16px;align-self:center">
-        <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--amber);margin-bottom:10px">📊 Comparativo de remuneração</div>
-        <!-- Cabeçalho colunas -->
-        <div style="display:grid;grid-template-columns:40px 1fr 1fr;gap:8px;margin-bottom:6px">
-          <div></div>
-          <div style="font-size:10px;font-weight:700;color:#92400E;text-align:center">Médias atuais</div>
-          <div style="font-size:10px;font-weight:700;color:#1D4ED8;text-align:center">Indicativo mercado</div>
-        </div>
-        <div style="font-size:9px;color:var(--text-3);text-align:right;margin-bottom:8px;padding-right:2px">SaaS B2B · 2025</div>
-        <!-- Linhas -->
-        <div style="display:grid;grid-template-columns:40px 1fr 1fr;gap:8px;align-items:center;margin-bottom:8px">
-          <span style="font-size:12px;font-weight:700;color:var(--text)">EV</span>
-          <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px;text-align:center">R$ 9.185</span>
-          <span style="font-size:12px;font-weight:700;color:#1E40AF;background:#EFF6FF;border:1px solid #BFDBFE;padding:2px 8px;border-radius:4px;text-align:center">R$ 15.000</span>
-        </div>
-        <div style="display:grid;grid-template-columns:40px 1fr 1fr;gap:8px;align-items:center;margin-bottom:8px">
-          <span style="font-size:12px;font-weight:700;color:var(--text)">GC</span>
-          <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px;text-align:center">R$ 8.348</span>
-          <span style="font-size:12px;font-weight:700;color:#1E40AF;background:#EFF6FF;border:1px solid #BFDBFE;padding:2px 8px;border-radius:4px;text-align:center">R$ 12.000</span>
-        </div>
-        <div style="display:grid;grid-template-columns:40px 1fr 1fr;gap:8px;align-items:center">
-          <span style="font-size:12px;font-weight:700;color:var(--text)">CS</span>
-          <span style="font-size:12px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 8px;border-radius:4px;text-align:center">R$ 6.024</span>
-          <span style="font-size:12px;font-weight:700;color:#1E40AF;background:#EFF6FF;border:1px solid #BFDBFE;padding:2px 8px;border-radius:4px;text-align:center">R$ 9.000</span>
-        </div>
-        <div style="font-size:9px;color:var(--text-3);margin-top:10px;line-height:1.5;border-top:1px solid #FDE68A;padding-top:8px">Médias aproximadas atuais · Salário médio de referência - mercado SaaS B2B, 2025</div>
-      </div>
+    <!-- Grid 4 colunas: papel | slider | médias atuais | indicativo mercado -->
+    <div style="display:grid;grid-template-columns:36px 1fr 110px 110px;gap:8px;align-items:center;margin-bottom:6px">
+      <div></div>
+      <div></div>
+      <div style="font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#92400E;text-align:center;background:#FEF3C7;padding:3px 4px;border-radius:4px">Médias atuais</div>
+      <div style="font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#1E40AF;text-align:center;background:#EFF6FF;border:1px solid #BFDBFE;padding:3px 4px;border-radius:4px">Indicativo mercado</div>
     </div>
+
+    <!-- EV -->
+    <div style="display:grid;grid-template-columns:36px 1fr 110px 110px;gap:8px;align-items:center;margin-bottom:10px">
+      <span style="font-size:11px;font-weight:700;color:#185FA5">EV</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <input type="range" min="3000" max="30000" step="500" id="sim-sal-ev" value="9000" oninput="calcSim()" style="flex:1">
+        <span class="val" id="sim-sal-ev-disp" style="min-width:70px;text-align:right">R$ 9.000</span>
+      </div>
+      <span style="font-size:11px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 6px;border-radius:4px;text-align:center;display:block">R$ 9.185</span>
+      <span style="font-size:11px;font-weight:700;color:#1E40AF;background:#EFF6FF;border:1px solid #BFDBFE;padding:2px 6px;border-radius:4px;text-align:center;display:block">R$ 15.000</span>
+    </div>
+
+    <!-- GC -->
+    <div style="display:grid;grid-template-columns:36px 1fr 110px 110px;gap:8px;align-items:center;margin-bottom:10px">
+      <span style="font-size:11px;font-weight:700;color:#0F6E56">GC</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <input type="range" min="3000" max="30000" step="500" id="sim-sal-gc" value="8500" oninput="calcSim()" style="flex:1">
+        <span class="val" id="sim-sal-gc-disp" style="min-width:70px;text-align:right">R$ 8.500</span>
+      </div>
+      <span style="font-size:11px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 6px;border-radius:4px;text-align:center;display:block">R$ 8.348</span>
+      <span style="font-size:11px;font-weight:700;color:#1E40AF;background:#EFF6FF;border:1px solid #BFDBFE;padding:2px 6px;border-radius:4px;text-align:center;display:block">R$ 12.000</span>
+    </div>
+
+    <!-- CS -->
+    <div style="display:grid;grid-template-columns:36px 1fr 110px 110px;gap:8px;align-items:center">
+      <span style="font-size:11px;font-weight:700;color:#7C3AED">CS</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <input type="range" min="3000" max="30000" step="500" id="sim-sal-cs" value="6000" oninput="calcSim()" style="flex:1">
+        <span class="val" id="sim-sal-cs-disp" style="min-width:70px;text-align:right">R$ 6.000</span>
+      </div>
+      <span style="font-size:11px;font-weight:700;color:#92400E;background:#FEF3C7;padding:2px 6px;border-radius:4px;text-align:center;display:block">R$ 6.024</span>
+      <span style="font-size:11px;font-weight:700;color:#1E40AF;background:#EFF6FF;border:1px solid #BFDBFE;padding:2px 6px;border-radius:4px;text-align:center;display:block">R$ 9.000</span>
+    </div>
+
+    <div style="font-size:9px;color:var(--text-3);margin-top:12px;padding-top:8px;border-top:1px solid var(--border)">📊 Comparativo de remuneração · Médias aproximadas atuais · Salário médio de referência - mercado SaaS B2B, 2025</div>
   </div>
 
   <div class="metric-grid metric-grid-4" id="sim-metrics"></div>
@@ -1342,7 +1337,36 @@ function calcDegraus() {
       {label:'Modelo selecionado',data,borderColor:'#185FA5',backgroundColor:'rgba(26,86,219,.07)',fill:true,tension:.3,pointRadius:0,borderWidth:2},
       {label:'Linear puro',data:dataLinear,borderColor:'#9CA3AF',fill:false,tension:0,pointRadius:0,borderWidth:1.5,borderDash:[4,3]},
     ]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.raw+'%'}}},
+    options:{responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index', intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          callbacks:{
+            title: ctx => `Atingimento: ${ctx[0].label}`,
+            label: ctx => {
+              if(ctx.datasetIndex===0) return `RV a pagar: ${ctx.raw}% do RV alvo`;
+              return `Linear puro: ${ctx.raw}%`;
+            },
+            afterBody: ctx => {
+              if(ctx[0].datasetIndex===0){
+                const rv = ctx[0].raw;
+                if(rv===0) return ['→ Abaixo do mínimo — sem pagamento'];
+                if(rv<65)  return [`→ Zona de alerta: RV parcial (${rv}%)`];
+                if(rv<100) return [`→ Zona de progressão: ${rv}% do RV alvo`];
+                if(rv===100) return ['→ Meta atingida: 100% do RV alvo pago'];
+                return [`→ Acelerador ativo: ${rv}% do RV alvo`];
+              }
+              return [];
+            }
+          },
+          backgroundColor:'rgba(15,30,60,.88)',
+          titleColor:'#fff',
+          bodyColor:'#CBD5E1',
+          padding:10,
+          cornerRadius:6
+        }
+      },
       scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#9CA3AF',font:{size:10},maxTicksLimit:10}},
               y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#9CA3AF',font:{size:10},callback:v=>v+'%'},min:0,max:170}}}
   });
